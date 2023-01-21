@@ -267,11 +267,11 @@ void PxThreadImpl::yield()
 
 void PxThreadImpl::yieldProcessor()
 {
-#if (PX_ARM || PX_A64)
-	__asm__ __volatile__("yield");
-#else
-	__asm__ __volatile__("pause");
-#endif
+// #if (PX_ARM || PX_A64)
+// 	__asm__ __volatile__("yield");
+// #else
+// 	__asm__ __volatile__("pause");
+// #endif
 }
 
 uint32_t PxThreadImpl::setAffinityMask(uint32_t mask)
