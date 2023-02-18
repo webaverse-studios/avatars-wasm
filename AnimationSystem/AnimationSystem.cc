@@ -213,6 +213,7 @@ namespace AnimationSystem {
     avatar->actionInterpolants["narutoRun"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["fly"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["swim"] = new InfiniteActionInterpolant(0);
+    avatar->actionInterpolants["swimTransition"] = new BiActionInterpolant(0, 300);
     avatar->actionInterpolants["jump"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["doubleJump"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["land"] = new InfiniteActionInterpolant(0);
@@ -363,6 +364,7 @@ namespace AnimationSystem {
     this->actionInterpolants["narutoRun"]->update(timeDiff, this->narutoRunState);
     this->actionInterpolants["fly"]->update(timeDiff, this->flyState);
     this->actionInterpolants["swim"]->update(timeDiff, this->swimState);
+    this->actionInterpolants["swimTransition"]->update(timeDiff, this->swimState);
     this->actionInterpolants["jump"]->update(timeDiff, this->jumpState);
     this->actionInterpolants["doubleJump"]->update(timeDiff, this->doubleJumpState);
     this->actionInterpolants["land"]->update(timeDiff, this->landState && !this->flyState);
@@ -449,6 +451,8 @@ namespace AnimationSystem {
     this->flyTime = this->flyState ? this->actionInterpolants["fly"]->get() : -1;
 
     this->swimTime = this->swimState ? this->actionInterpolants["swim"]->get() : -1;
+
+    this->swimFactor = this->actionInterpolants["swimTransition"]->getNormalized();
 
     this->jumpTime = this->actionInterpolants["jump"]->get();
 
@@ -1249,7 +1253,8 @@ namespace AnimationSystem {
   }
 
   void _blendSwim(AnimationMapping &spec, Avatar *avatar) {
-    if (avatar->swimState) {
+    // if (avatar->swimState) {
+    if (avatar->swimFactor > 0) {
       float swimTimeS = avatar->swimTime / 1000;
       float movementsTimeS = avatar->movementsTime / 1000;
 
@@ -1262,7 +1267,8 @@ namespace AnimationSystem {
       float t4 = fmod(movementsTimeS * 2, animationGroups[animationGroupIndexes.Swim][swimAnimationIndexes.Freestyle]->duration);
       float *v4 = evaluateInterpolant(animationGroups[animationGroupIndexes.Swim][swimAnimationIndexes.Freestyle], spec.index, t4);
 
-      float f = clamp(swimTimeS / 0.2, 0, 1);
+      // float f = clamp(swimTimeS / 0.2, 0, 1);
+      float f = avatar->swimFactor;
 
       if (!spec.isPosition) {
         // // can't use idleWalkFactor & walkRunFactor here, otherwise "Impulsive breaststroke swim animation" will turn into "freestyle animation" when speed is fast,
