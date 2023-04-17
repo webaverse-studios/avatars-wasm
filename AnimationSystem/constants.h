@@ -825,6 +825,11 @@ AnimationGroupDeclarations declarations = {
         sitAnimationIndexes.Stand = sitAnimationIota++,
         "Skateboarding.fbx"
       },
+      {
+        "ergonomicChair",
+        sitAnimationIndexes.Stand = sitAnimationIota++,
+        "full_body_idle.fbx"
+      },
     }
   },
   {
