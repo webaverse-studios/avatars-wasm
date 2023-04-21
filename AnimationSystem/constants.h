@@ -98,6 +98,7 @@ public:
   int Aim;
   int Dance;
   int Emote;
+  int EmoteSitting;
   int Hold;
   int Hurt;
   int Land;
@@ -240,6 +241,28 @@ public:
   int VictorySoft;
 };
 EmoteAnimationIndexes emoteAnimationIndexes;
+
+int emoteSittingAnimationIota = 0;
+class EmoteSittingAnimationIndexes {
+public:
+  int Alert;
+  int AlertSoft;
+  int Angry;
+  int AngrySoft;
+  int Embarrassed;
+  int EmbarrassedSoft;
+  int HeadNod;
+  int HeadNodSoft;
+  int HeadShake;
+  int HeadShakeSoft;
+  int Sad;
+  int SadSoft;
+  int Surprise;
+  int SurpriseSoft;
+  int Victory;
+  int VictorySoft;
+};
+EmoteSittingAnimationIndexes emoteSittingAnimationIndexes;
 
 int holdAnimationIota = 0;
 class HoldAnimationIndexes {
@@ -707,6 +730,92 @@ AnimationGroupDeclarations declarations = {
       {
         "victorySoft",
         emoteAnimationIndexes.VictorySoft = emoteAnimationIota++,
+        "victory_soft.fbx"
+      },
+    }
+  },
+  {
+    "emoteSitting",
+    animationGroupIndexes.EmoteSitting = animationGroupIota++,
+    {
+      {
+        "alert",
+        emoteSittingAnimationIndexes.Alert = emoteSittingAnimationIota++,
+        "alert.fbx"
+      },
+      {
+        "alertSoft",
+        emoteSittingAnimationIndexes.AlertSoft = emoteSittingAnimationIota++,
+        "alert_soft.fbx"
+      },
+      {
+        "angry",
+        emoteSittingAnimationIndexes.Angry = emoteSittingAnimationIota++,
+        "upper_angry.fbx"
+      },
+      {
+        "angrySoft",
+        emoteSittingAnimationIndexes.AngrySoft = emoteSittingAnimationIota++,
+        "angry_soft.fbx"
+      },
+      {
+        "embarrassed",
+        emoteSittingAnimationIndexes.Embarrassed = emoteSittingAnimationIota++,
+        "embarrassed.fbx"
+      },
+      {
+        "embarrassedSoft",
+        emoteSittingAnimationIndexes.EmbarrassedSoft = emoteSittingAnimationIota++,
+        "embarrassed_soft.fbx"
+      },
+      {
+        "headNod",
+        emoteSittingAnimationIndexes.HeadNod = emoteSittingAnimationIota++,
+        "upper_nod.fbx"
+      },
+      {
+        "headNodSoft",
+        emoteSittingAnimationIndexes.HeadNodSoft = emoteSittingAnimationIota++,
+        "head_nod_single.fbx"
+      },
+      {
+        "headShake",
+        emoteSittingAnimationIndexes.HeadShake = emoteSittingAnimationIota++,
+        "head_shake.fbx"
+      },
+      {
+        "headShakeSoft",
+        emoteSittingAnimationIndexes.HeadShakeSoft = emoteSittingAnimationIota++,
+        "head_shake_single.fbx"
+      },
+      {
+        "sad",
+        emoteSittingAnimationIndexes.Sad = emoteSittingAnimationIota++,
+        "upper_sad.fbx"
+      },
+      {
+        "sadSoft",
+        emoteSittingAnimationIndexes.SadSoft = emoteSittingAnimationIota++,
+        "sad_soft.fbx"
+      },
+      {
+        "surprise",
+        emoteSittingAnimationIndexes.Surprise = emoteSittingAnimationIota++,
+        "upper_surprise.fbx"
+      },
+      {
+        "surpriseSoft",
+        emoteSittingAnimationIndexes.SurpriseSoft = emoteSittingAnimationIota++,
+        "surprise_soft.fbx"
+      },
+      {
+        "victory",
+        emoteSittingAnimationIndexes.Victory = emoteSittingAnimationIota++,
+        "upper_joy.fbx"
+      },
+      {
+        "victorySoft",
+        emoteSittingAnimationIndexes.VictorySoft = emoteSittingAnimationIota++,
         "victory_soft.fbx"
       },
     }
