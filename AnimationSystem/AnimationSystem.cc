@@ -873,6 +873,29 @@ namespace AnimationSystem {
       float f = min(max(emoteFactorS, 0), 1);
 
       interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
+    } else {
+      if (avatar->isRandomSittingIdle) {
+        if (spec.index == 0) std::cout << "isRandomSittingIdle: true" << std::endl;
+        Animation *randomSittingIdleAnimation = animationGroups[animationGroupIndexes.EmoteSitting][avatar->lastRandomSittingIdleIndex];
+        float animTimeS = AnimationMixer::nowS - avatar->lastRandomSittingIdleStartTimeS;
+        float t2 = min(animTimeS, randomSittingIdleAnimation->duration);
+        float *v2 = evaluateInterpolant(randomSittingIdleAnimation, spec.index, t2);
+
+        copyValue(spec.dst, v2, spec.isPosition);
+
+        if (animTimeS > randomSittingIdleAnimation->duration) {
+          avatar->isRandomSittingIdle = false;
+        }
+      } else {
+        // if (spec.index == 0) std::cout << "isRandomSittingIdle: false" << std::endl;
+        if (AnimationMixer::nowS - avatar->lastRandomSittingIdleStartTimeS > 5) {
+          avatar->isRandomSittingIdle = true;
+          srand(time(NULL));
+          avatar->lastRandomSittingIdleIndex = rand() % animationGroups[animationGroupIndexes.EmoteSitting].size();
+          if (spec.index == 0) std::cout << "lastRandomSittingIdleIndex: " << avatar->lastRandomSittingIdleIndex << std::endl;
+          avatar->lastRandomSittingIdleStartTimeS = AnimationMixer::nowS;
+        }
+      }
     }
   }
 
