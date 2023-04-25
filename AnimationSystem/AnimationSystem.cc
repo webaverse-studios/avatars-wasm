@@ -875,24 +875,25 @@ namespace AnimationSystem {
       interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
     } else {
       if (avatar->isRandomSittingIdle) {
-        if (spec.index == 0) std::cout << "isRandomSittingIdle: true" << std::endl;
+        // if (spec.index == 0) std::cout << "isRandomSittingIdle: true" << std::endl;
         Animation *randomSittingIdleAnimation = animationGroups[animationGroupIndexes.EmoteSitting][avatar->lastRandomSittingIdleIndex];
         float animTimeS = AnimationMixer::nowS - avatar->lastRandomSittingIdleStartTimeS;
         float t2 = min(animTimeS, randomSittingIdleAnimation->duration);
+        if (spec.index == 0) std::cout << "t2: " << t2 << std::endl;
         float *v2 = evaluateInterpolant(randomSittingIdleAnimation, spec.index, t2);
 
         copyValue(spec.dst, v2, spec.isPosition);
 
-        if (animTimeS > randomSittingIdleAnimation->duration) {
+        if (spec.index == 52 && animTimeS > randomSittingIdleAnimation->duration) {
           avatar->isRandomSittingIdle = false;
         }
       } else {
         // if (spec.index == 0) std::cout << "isRandomSittingIdle: false" << std::endl;
-        if (AnimationMixer::nowS - avatar->lastRandomSittingIdleStartTimeS > 5) {
+        if (spec.index == 52 && AnimationMixer::nowS - avatar->lastRandomSittingIdleStartTimeS > 5) { // todo: don't hard-code 52 ?
           avatar->isRandomSittingIdle = true;
           srand(time(NULL));
           avatar->lastRandomSittingIdleIndex = rand() % animationGroups[animationGroupIndexes.EmoteSitting].size();
-          if (spec.index == 0) std::cout << "lastRandomSittingIdleIndex: " << avatar->lastRandomSittingIdleIndex << std::endl;
+          /* if (spec.index == 0) */ std::cout << "lastRandomSittingIdleIndex: " << avatar->lastRandomSittingIdleIndex << std::endl;
           avatar->lastRandomSittingIdleStartTimeS = AnimationMixer::nowS;
         }
       }
