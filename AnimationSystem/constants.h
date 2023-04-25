@@ -937,7 +937,7 @@ AnimationGroupDeclarations declarations = {
       {
         "ergonomicChair",
         sitAnimationIndexes.Stand = sitAnimationIota++,
-        "full_body_idle.fbx"
+        "upper_breath.fbx"
       },
     }
   },

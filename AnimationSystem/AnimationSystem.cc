@@ -858,7 +858,8 @@ namespace AnimationSystem {
   void _blendSit(AnimationMapping &spec, Avatar *avatar) {
 
     Animation *sitAnimation = animationGroups[animationGroupIndexes.Sit][avatar->sitAnimationIndex == -1 ? defaultSitAnimationIndex : avatar->sitAnimationIndex];
-    float *v2 = evaluateInterpolant(sitAnimation, spec.index, 1);
+    float t2 = fmod(AnimationMixer::nowS, sitAnimation->duration);
+    float *v2 = evaluateInterpolant(sitAnimation, spec.index, t2);
 
     copyValue(spec.dst, v2, spec.isPosition);
 
