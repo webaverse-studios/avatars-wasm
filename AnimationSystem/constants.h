@@ -855,7 +855,12 @@ AnimationGroupDeclarations declarations = {
       {
         "upperHandsChin",
         randomSittingIdleAnimationIndexes.AlertSoft = randomSittingIdleAnimationIota++,
-        "upper_hands_chin.fbx"
+        "upper_explaining.fbx"
+      },
+      {
+        "upperHandInFace",
+        randomSittingIdleAnimationIndexes.AlertSoft = randomSittingIdleAnimationIota++,
+        "upper_hand_in_face.fbx"
       },
       {
         "upperInspired",
