@@ -863,7 +863,7 @@ namespace AnimationSystem {
 
     copyValue(spec.dst, v2, spec.isPosition);
 
-    if (avatar->emoteFactor > 0) {
+    if (avatar->emoteFactor > 0) { // note: sitting emote animations ( body animations, not facepose/morphtarget animations ).
       Animation *emoteAnimation = animationGroups[animationGroupIndexes.EmoteSitting][avatar->emoteAnimationIndex < 0 ? defaultEmoteAnimationIndex : avatar->emoteAnimationIndex];
       float emoteTime = AnimationMixer::nowS * 1000 - avatar->lastEmoteTime;
       float t2 = min(emoteTime / 1000, emoteAnimation->duration);
@@ -873,10 +873,10 @@ namespace AnimationSystem {
       float f = min(max(emoteFactorS, 0), 1);
 
       interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
-    } else {
+    } else { // note: random sitting idle animations.
       if (avatar->isRandomSittingIdle) {
         // if (spec.index == 0) std::cout << "isRandomSittingIdle: true" << std::endl;
-        Animation *randomSittingIdleAnimation = animationGroups[animationGroupIndexes.EmoteSitting][avatar->lastRandomSittingIdleIndex];
+        Animation *randomSittingIdleAnimation = animationGroups[animationGroupIndexes.RandomSittingIdle][avatar->lastRandomSittingIdleIndex];
         float animTimeS = AnimationMixer::nowS - avatar->lastRandomSittingIdleStartTimeS;
         float t2 = min(animTimeS, randomSittingIdleAnimation->duration);
         if (spec.index == 0) std::cout << "t2: " << t2 << std::endl;
@@ -892,7 +892,7 @@ namespace AnimationSystem {
         if (spec.index == 52 && AnimationMixer::nowS - avatar->lastRandomSittingIdleStartTimeS > 5) { // todo: don't hard-code 52 ?
           avatar->isRandomSittingIdle = true;
           srand(time(NULL));
-          avatar->lastRandomSittingIdleIndex = rand() % animationGroups[animationGroupIndexes.EmoteSitting].size();
+          avatar->lastRandomSittingIdleIndex = rand() % animationGroups[animationGroupIndexes.RandomSittingIdle].size();
           /* if (spec.index == 0) */ std::cout << "lastRandomSittingIdleIndex: " << avatar->lastRandomSittingIdleIndex << std::endl;
           avatar->lastRandomSittingIdleStartTimeS = AnimationMixer::nowS;
         }

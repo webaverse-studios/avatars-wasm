@@ -99,6 +99,7 @@ public:
   int Dance;
   int Emote;
   int EmoteSitting;
+  int RandomSittingIdle;
   int Hold;
   int Hurt;
   int Land;
@@ -263,6 +264,28 @@ public:
   int VictorySoft;
 };
 EmoteSittingAnimationIndexes emoteSittingAnimationIndexes;
+
+int randomSittingIdleAnimationIota = 0;
+class RandomSittingIdleAnimationIndexes {
+public:
+  int Alert;
+  int AlertSoft;
+  int Angry;
+  int AngrySoft;
+  int Embarrassed;
+  int EmbarrassedSoft;
+  int HeadNod;
+  int HeadNodSoft;
+  int HeadShake;
+  int HeadShakeSoft;
+  int Sad;
+  int SadSoft;
+  int Surprise;
+  int SurpriseSoft;
+  int Victory;
+  int VictorySoft;
+};
+RandomSittingIdleAnimationIndexes randomSittingIdleAnimationIndexes;
 
 int holdAnimationIota = 0;
 class HoldAnimationIndexes {
@@ -817,6 +840,32 @@ AnimationGroupDeclarations declarations = {
         "victorySoft",
         emoteSittingAnimationIndexes.VictorySoft = emoteSittingAnimationIota++,
         "victory_soft.fbx"
+      },
+    }
+  },
+  {
+    "randomSittingIdle",
+    animationGroupIndexes.RandomSittingIdle = animationGroupIota++,
+    {
+      {
+        "upperFistThinking",
+        randomSittingIdleAnimationIndexes.Alert = randomSittingIdleAnimationIota++,
+        "upper_fist_thinking.fbx"
+      },
+      {
+        "upperHandsChin",
+        randomSittingIdleAnimationIndexes.AlertSoft = randomSittingIdleAnimationIota++,
+        "upper_hands_chin.fbx"
+      },
+      {
+        "upperInspired",
+        randomSittingIdleAnimationIndexes.Angry = randomSittingIdleAnimationIota++,
+        "upper_inspired.fbx"
+      },
+      {
+        "upperListening",
+        randomSittingIdleAnimationIndexes.AngrySoft = randomSittingIdleAnimationIota++,
+        "upper_listening.fbx"
       },
     }
   },
