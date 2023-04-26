@@ -34,6 +34,8 @@ namespace AnimationSystem {
 
   bool isInitedAnimationSystem = false;
 
+  // int lastRandomSittingIdleIndexCount = 0; // test
+
   // functions:
 
   // Utils ------
@@ -899,8 +901,15 @@ namespace AnimationSystem {
         // if (spec.index == 0) std::cout << "isRandomSittingIdle: false" << std::endl;
         if (spec.index == 52 && AnimationMixer::nowS - avatar->lastRandomSittingIdleStartTimeS > 5) { // todo: don't hard-code 52 ?
           avatar->isRandomSittingIdle = true;
+
+          // random indexes
           srand(time(NULL));
           avatar->lastRandomSittingIdleIndex = rand() % animationGroups[animationGroupIndexes.RandomSittingIdle].size();
+
+          // sequential indexes
+          // avatar->lastRandomSittingIdleIndex = lastRandomSittingIdleIndexCount % animationGroups[animationGroupIndexes.RandomSittingIdle].size();
+          // lastRandomSittingIdleIndexCount++;
+
           /* if (spec.index == 0) */ std::cout << "lastRandomSittingIdleIndex: " << avatar->lastRandomSittingIdleIndex << std::endl;
           avatar->lastRandomSittingIdleStartTimeS = AnimationMixer::nowS;
         }
