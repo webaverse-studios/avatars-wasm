@@ -861,6 +861,18 @@ namespace AnimationSystem {
     float *v2 = evaluateInterpolant(sitAnimation, spec.index, 1);
 
     copyValue(spec.dst, v2, spec.isPosition);
+
+    if (avatar->emoteFactor > 0) {
+      Animation *emoteAnimation = animationGroups[animationGroupIndexes.EmoteSitting][avatar->emoteAnimationIndex < 0 ? defaultEmoteAnimationIndex : avatar->emoteAnimationIndex];
+      float emoteTime = AnimationMixer::nowS * 1000 - avatar->lastEmoteTime;
+      float t2 = min(emoteTime / 1000, emoteAnimation->duration);
+      float *v2 = evaluateInterpolant(emoteAnimation, spec.index, t2);
+
+      float emoteFactorS = avatar->emoteFactor / crouchMaxTime;
+      float f = min(max(emoteFactorS, 0), 1);
+
+      interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
+    }
   }
 
   void _blendNarutoRun(AnimationMapping &spec, Avatar *avatar) {
