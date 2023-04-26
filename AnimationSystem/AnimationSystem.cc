@@ -878,13 +878,14 @@ namespace AnimationSystem {
         // if (spec.index == 0) std::cout << "isRandomSittingIdle: true" << std::endl;
         Animation *randomSittingIdleAnimation = animationGroups[animationGroupIndexes.RandomSittingIdle][avatar->lastRandomSittingIdleIndex];
         float animTimeS = AnimationMixer::nowS - avatar->lastRandomSittingIdleStartTimeS;
+        float leastDuration = max(2, randomSittingIdleAnimation->duration);
         float t2 = min(animTimeS, randomSittingIdleAnimation->duration);
         if (spec.index == 0) std::cout << "t2: " << t2 << std::endl;
         float *v2 = evaluateInterpolant(randomSittingIdleAnimation, spec.index, t2);
 
         copyValue(spec.dst, v2, spec.isPosition);
 
-        if (spec.index == 52 && animTimeS > randomSittingIdleAnimation->duration) {
+        if (spec.index == 52 && animTimeS > leastDuration) {
           avatar->isRandomSittingIdle = false;
         }
       } else {
