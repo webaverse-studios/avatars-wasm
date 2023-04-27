@@ -186,10 +186,9 @@ namespace AnimationSystem {
     std::vector<int> useAnimationEnvelopeIndices;
 
     // for random sitting idle animations
-    int lastRandomSittingIdleIndex = 0;
-    float lastRandomSittingIdleStartTimeS = 0;
     bool isRandomSittingIdle = false;
-    int lastRandomSittingIdleIndexCount = 0;
+    int lastRandomSittingIdleIndex = -1;
+    float lastRandomSittingIdleStartTimeS = 0;
     float lastRandomSittingIdleEndTimeS = 0;
 
     //

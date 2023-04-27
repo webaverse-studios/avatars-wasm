@@ -902,8 +902,10 @@ namespace AnimationSystem {
           // avatar->lastRandomSittingIdleIndex = rand() % animationGroups[animationGroupIndexes.RandomSittingIdle].size();
 
           // sequential indexes
-          avatar->lastRandomSittingIdleIndex = avatar->lastRandomSittingIdleIndexCount % animationGroups[animationGroupIndexes.RandomSittingIdle].size();
-          avatar->lastRandomSittingIdleIndexCount++;
+          avatar->lastRandomSittingIdleIndex++;
+          if (avatar->lastRandomSittingIdleIndex >= animationGroups[animationGroupIndexes.RandomSittingIdle].size()) {
+            avatar->lastRandomSittingIdleIndex = 0;
+          }
 
           avatar->lastRandomSittingIdleStartTimeS = AnimationMixer::nowS;
         }
