@@ -91,6 +91,8 @@ namespace AnimationSystem {
     std::string boneName;
     bool isTop;
     bool isArm;
+    bool isFirstBone;
+    bool isLastBone;
   };
 
   class Avatar {
@@ -187,6 +189,8 @@ namespace AnimationSystem {
     int lastRandomSittingIdleIndex = 0;
     float lastRandomSittingIdleStartTimeS = 0;
     bool isRandomSittingIdle = false;
+    int lastRandomSittingIdleIndexCount = 0;
+    float lastRandomSittingIdleEndTimeS = 0;
 
     //
     
@@ -208,7 +212,7 @@ namespace AnimationSystem {
 
   // ------
   // need run in this order
-  void createAnimationMapping(bool isPosition, unsigned int index, bool isTop, bool isArm, char *scratchStack, unsigned int nameByteLength);
+  void createAnimationMapping(bool isPosition, unsigned int index, bool isTop, bool isArm, char *scratchStack, unsigned int nameByteLength, bool isFirstBone, bool isLastBone);
   Animation *createAnimation(char *scratchStack, unsigned int nameByteLength, float duration);
   void createAnimationInterpolant(Animation *animation, unsigned int numParameterPositions, float *parameterPositions, unsigned int numSampleValues, float *sampleValues, unsigned int valueSize);
   unsigned int initAnimationSystem(char *scratchStack);
