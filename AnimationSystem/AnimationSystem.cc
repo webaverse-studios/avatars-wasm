@@ -895,7 +895,7 @@ namespace AnimationSystem {
           avatar->lastRandomSittingIdleEndTimeS = AnimationMixer::nowS;
         }
       } else {
-        if (spec.isLastBone && AnimationMixer::nowS - avatar->lastRandomSittingIdleEndTimeS > 1) {
+        if (spec.isLastBone && AnimationMixer::nowS - avatar->lastRandomSittingIdleEndTimeS > avatar->lastRandomIntervalTimeS) {
           avatar->isRandomSittingIdle = true;
 
           // random indexes
@@ -909,6 +909,7 @@ namespace AnimationSystem {
           // }
 
           avatar->lastRandomSittingIdleStartTimeS = AnimationMixer::nowS;
+          avatar->lastRandomIntervalTimeS = rand() % 13 + 3; // 3 ~ 15
         }
       }
     }
