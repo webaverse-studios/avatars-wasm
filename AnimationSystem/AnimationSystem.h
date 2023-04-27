@@ -191,6 +191,7 @@ namespace AnimationSystem {
     float lastRandomSittingIdleStartTimeS = 0;
     float lastRandomSittingIdleEndTimeS = 0;
     int lastRandomIntervalTimeS = rand() % 13 + 3; // 3 ~ 15
+    float lastRandomSpeed = rand() % 76 / 100 + 0.25; // 0.25 ~ 1
 
     //
     

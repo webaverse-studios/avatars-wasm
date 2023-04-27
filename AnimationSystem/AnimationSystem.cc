@@ -881,8 +881,9 @@ namespace AnimationSystem {
         Animation *randomSittingIdleAnimation = animationGroups[animationGroupIndexes.RandomSittingIdle][avatar->lastRandomSittingIdleIndex];
         float timeS = AnimationMixer::nowS - avatar->lastRandomSittingIdleStartTimeS;
         float leastDuration = max(2, randomSittingIdleAnimation->duration);
+        leastDuration /= avatar->lastRandomSpeed;
         float t2 = min(timeS, leastDuration);
-        float *v2 = evaluateInterpolant(randomSittingIdleAnimation, spec.index, t2);
+        float *v2 = evaluateInterpolant(randomSittingIdleAnimation, spec.index, t2 * avatar->lastRandomSpeed);
 
         float f0 = t2 / 0.2;
         float f1 = (leastDuration - t2) / 0.2;
@@ -900,7 +901,6 @@ namespace AnimationSystem {
 
           // random indexes
           avatar->lastRandomSittingIdleIndex = rand() % animationGroups[animationGroupIndexes.RandomSittingIdle].size();
-          std::cout << "lastRandomSittingIdleIndex: " << avatar->lastRandomSittingIdleIndex << std::endl;
 
           // // sequential indexes
           // avatar->lastRandomSittingIdleIndex++;
@@ -910,6 +910,11 @@ namespace AnimationSystem {
 
           avatar->lastRandomSittingIdleStartTimeS = AnimationMixer::nowS;
           avatar->lastRandomIntervalTimeS = rand() % 13 + 3; // 3 ~ 15
+          avatar->lastRandomSpeed = rand() % 76 / 100 + 0.25; // 0.25 ~ 1
+          std::cout << "lastRandomSittingIdleIndex: " << avatar->lastRandomSittingIdleIndex << std::endl;
+          std::cout << "lastRandomSpeed: " << avatar->lastRandomSittingIdleIndex << std::endl;
+          std::cout << "lastRandomIntervalTimeS: " << avatar->lastRandomSittingIdleIndex << std::endl;
+          std::cout << "---" << std::endl;
         }
       }
     }
