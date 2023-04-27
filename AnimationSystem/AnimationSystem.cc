@@ -34,8 +34,6 @@ namespace AnimationSystem {
 
   bool isInitedAnimationSystem = false;
 
-  // int lastRandomSittingIdleIndexCount = 0; // test
-
   // functions:
 
   // Utils ------
@@ -668,13 +666,15 @@ namespace AnimationSystem {
     animationMixer->animationValues = new float[_animationMappings.size() * 4];
     return animationMixer;
   }
-  void createAnimationMapping(bool isPosition, unsigned int index, bool isTop, bool isArm, char *scratchStack, unsigned int nameByteLength) {
+  void createAnimationMapping(bool isPosition, unsigned int index, bool isTop, bool isArm, char *scratchStack, unsigned int nameByteLength, bool isFirstBone, bool isLastBone) {
     AnimationMapping animationMapping;
 
     animationMapping.isPosition = isPosition;
     animationMapping.index = index;
     animationMapping.isTop = isTop;
     animationMapping.isArm = isArm;
+    animationMapping.isFirstBone = isFirstBone;
+    animationMapping.isLastBone = isLastBone;
 
     std::string boneName = "";
     for (unsigned int i = 0; i < nameByteLength; i++) {
@@ -894,21 +894,22 @@ namespace AnimationSystem {
         f = min(1, f);
         interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
 
-        if (spec.index == 52 && timeS >= leastDuration) { // todo: don't hard-code 52 ?
+        if (spec.isLastBone && timeS >= leastDuration) { // todo: don't hard-code 52 ?
           avatar->isRandomSittingIdle = false;
+          avatar->lastRandomSittingIdleEndTimeS = AnimationMixer::nowS;
         }
       } else {
         // if (spec.index == 0) std::cout << "isRandomSittingIdle: false" << std::endl;
-        if (spec.index == 52 && AnimationMixer::nowS - avatar->lastRandomSittingIdleStartTimeS > 5) { // todo: don't hard-code 52 ?
+        if (spec.isLastBone && AnimationMixer::nowS - avatar->lastRandomSittingIdleEndTimeS > 1) { // todo: don't hard-code 52 ?
           avatar->isRandomSittingIdle = true;
 
-          // random indexes
-          srand(time(NULL));
-          avatar->lastRandomSittingIdleIndex = rand() % animationGroups[animationGroupIndexes.RandomSittingIdle].size();
+          // // random indexes
+          // srand(time(NULL));
+          // avatar->lastRandomSittingIdleIndex = rand() % animationGroups[animationGroupIndexes.RandomSittingIdle].size();
 
           // sequential indexes
-          // avatar->lastRandomSittingIdleIndex = lastRandomSittingIdleIndexCount % animationGroups[animationGroupIndexes.RandomSittingIdle].size();
-          // lastRandomSittingIdleIndexCount++;
+          avatar->lastRandomSittingIdleIndex = avatar->lastRandomSittingIdleIndexCount % animationGroups[animationGroupIndexes.RandomSittingIdle].size();
+          avatar->lastRandomSittingIdleIndexCount++;
 
           /* if (spec.index == 0) */ std::cout << "lastRandomSittingIdleIndex: " << avatar->lastRandomSittingIdleIndex << std::endl;
           avatar->lastRandomSittingIdleStartTimeS = AnimationMixer::nowS;

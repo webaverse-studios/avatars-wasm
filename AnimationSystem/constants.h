@@ -268,22 +268,11 @@ EmoteSittingAnimationIndexes emoteSittingAnimationIndexes;
 int randomSittingIdleAnimationIota = 0;
 class RandomSittingIdleAnimationIndexes {
 public:
-  int Alert;
-  int AlertSoft;
-  int Angry;
-  int AngrySoft;
-  int Embarrassed;
-  int EmbarrassedSoft;
-  int HeadNod;
-  int HeadNodSoft;
-  int HeadShake;
-  int HeadShakeSoft;
-  int Sad;
-  int SadSoft;
-  int Surprise;
-  int SurpriseSoft;
-  int Victory;
-  int VictorySoft;
+  int upperIdleHandsExtend;
+  int upperIdleNeckShift;
+  int upperIdleForwardShift;
+  int upperIdleShift;
+  int upperIdleForwardShiftUp;
 };
 RandomSittingIdleAnimationIndexes randomSittingIdleAnimationIndexes;
 
@@ -848,29 +837,29 @@ AnimationGroupDeclarations declarations = {
     animationGroupIndexes.RandomSittingIdle = animationGroupIota++,
     {
       {
-        "upperFistThinking",
-        randomSittingIdleAnimationIndexes.Alert = randomSittingIdleAnimationIota++,
-        "upper_fist_thinking.fbx"
+        "upperIdleHandsExtend",
+        randomSittingIdleAnimationIndexes.upperIdleHandsExtend = randomSittingIdleAnimationIota++,
+        "upper_idle_hands_extend.fbx"
       },
       {
-        "upperHandsChin",
-        randomSittingIdleAnimationIndexes.AlertSoft = randomSittingIdleAnimationIota++,
-        "upper_explaining.fbx"
+        "upperIdleNeckShift",
+        randomSittingIdleAnimationIndexes.upperIdleNeckShift = randomSittingIdleAnimationIota++,
+        "upper_idle_neck_shift.fbx"
       },
       {
-        "upperHandInFace",
-        randomSittingIdleAnimationIndexes.AlertSoft = randomSittingIdleAnimationIota++,
-        "upper_hand_in_face.fbx"
+        "upperIdleForwardShift",
+        randomSittingIdleAnimationIndexes.upperIdleForwardShift = randomSittingIdleAnimationIota++,
+        "upper_idle_forward_shift.fbx"
       },
       {
-        "upperInspired",
-        randomSittingIdleAnimationIndexes.Angry = randomSittingIdleAnimationIota++,
-        "upper_inspired.fbx"
+        "upperIdleShift",
+        randomSittingIdleAnimationIndexes.upperIdleShift = randomSittingIdleAnimationIota++,
+        "upper_idle_shift.fbx"
       },
       {
-        "upperListening",
-        randomSittingIdleAnimationIndexes.AngrySoft = randomSittingIdleAnimationIota++,
-        "upper_listening.fbx"
+        "upperIdleForwardShiftUp",
+        randomSittingIdleAnimationIndexes.upperIdleForwardShiftUp = randomSittingIdleAnimationIota++,
+        "upper_idle_forward_shift_up.fbx"
       },
     }
   },
@@ -991,7 +980,7 @@ AnimationGroupDeclarations declarations = {
       {
         "ergonomicChair",
         sitAnimationIndexes.Stand = sitAnimationIota++,
-        "upper_breath.fbx"
+        "upper_idle_breath.fbx"
       },
     }
   },
