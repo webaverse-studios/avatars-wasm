@@ -231,6 +231,7 @@ namespace AnimationSystem {
     return avatar;
   }
   unsigned int initAnimationSystem(char *scratchStack) { // only need init once globally
+    srand(time(0));
     std::string jsonStr;
 
     if (!isInitedAnimationSystem) {
@@ -897,15 +898,15 @@ namespace AnimationSystem {
         if (spec.isLastBone && AnimationMixer::nowS - avatar->lastRandomSittingIdleEndTimeS > 1) {
           avatar->isRandomSittingIdle = true;
 
-          // // random indexes
-          // srand(time(NULL));
-          // avatar->lastRandomSittingIdleIndex = rand() % animationGroups[animationGroupIndexes.RandomSittingIdle].size();
+          // random indexes
+          avatar->lastRandomSittingIdleIndex = rand() % animationGroups[animationGroupIndexes.RandomSittingIdle].size();
+          std::cout << "lastRandomSittingIdleIndex: " << avatar->lastRandomSittingIdleIndex << std::endl;
 
-          // sequential indexes
-          avatar->lastRandomSittingIdleIndex++;
-          if (avatar->lastRandomSittingIdleIndex >= animationGroups[animationGroupIndexes.RandomSittingIdle].size()) {
-            avatar->lastRandomSittingIdleIndex = 0;
-          }
+          // // sequential indexes
+          // avatar->lastRandomSittingIdleIndex++;
+          // if (avatar->lastRandomSittingIdleIndex >= animationGroups[animationGroupIndexes.RandomSittingIdle].size()) {
+          //   avatar->lastRandomSittingIdleIndex = 0;
+          // }
 
           avatar->lastRandomSittingIdleStartTimeS = AnimationMixer::nowS;
         }
