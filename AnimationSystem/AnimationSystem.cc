@@ -877,16 +877,11 @@ namespace AnimationSystem {
       interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
     } else { // note: random sitting idle animations.
       if (avatar->isRandomSittingIdle) {
-        // if (spec.index == 0) std::cout << "isRandomSittingIdle: true" << std::endl;
         Animation *randomSittingIdleAnimation = animationGroups[animationGroupIndexes.RandomSittingIdle][avatar->lastRandomSittingIdleIndex];
         float timeS = AnimationMixer::nowS - avatar->lastRandomSittingIdleStartTimeS;
         float leastDuration = max(2, randomSittingIdleAnimation->duration);
-        // float t2 = min(timeS, randomSittingIdleAnimation->duration);
         float t2 = min(timeS, leastDuration);
-        // if (spec.index == 0) std::cout << "t2: " << t2 << std::endl;
         float *v2 = evaluateInterpolant(randomSittingIdleAnimation, spec.index, t2);
-
-        // copyValue(spec.dst, v2, spec.isPosition);
 
         float f0 = t2 / 0.2;
         float f1 = (leastDuration - t2) / 0.2;
@@ -894,13 +889,12 @@ namespace AnimationSystem {
         f = min(1, f);
         interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
 
-        if (spec.isLastBone && timeS >= leastDuration) { // todo: don't hard-code 52 ?
+        if (spec.isLastBone && timeS >= leastDuration) {
           avatar->isRandomSittingIdle = false;
           avatar->lastRandomSittingIdleEndTimeS = AnimationMixer::nowS;
         }
       } else {
-        // if (spec.index == 0) std::cout << "isRandomSittingIdle: false" << std::endl;
-        if (spec.isLastBone && AnimationMixer::nowS - avatar->lastRandomSittingIdleEndTimeS > 1) { // todo: don't hard-code 52 ?
+        if (spec.isLastBone && AnimationMixer::nowS - avatar->lastRandomSittingIdleEndTimeS > 1) {
           avatar->isRandomSittingIdle = true;
 
           // // random indexes
@@ -911,7 +905,6 @@ namespace AnimationSystem {
           avatar->lastRandomSittingIdleIndex = avatar->lastRandomSittingIdleIndexCount % animationGroups[animationGroupIndexes.RandomSittingIdle].size();
           avatar->lastRandomSittingIdleIndexCount++;
 
-          /* if (spec.index == 0) */ std::cout << "lastRandomSittingIdleIndex: " << avatar->lastRandomSittingIdleIndex << std::endl;
           avatar->lastRandomSittingIdleStartTimeS = AnimationMixer::nowS;
         }
       }
