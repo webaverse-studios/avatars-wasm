@@ -325,6 +325,7 @@ public:
   int Chair;
   int Saddle;
   int Stand;
+  int ErgonomicChair;
 };
 SitAnimationIndexes sitAnimationIndexes;
 
@@ -979,7 +980,7 @@ AnimationGroupDeclarations declarations = {
       },
       {
         "ergonomicChair",
-        sitAnimationIndexes.Stand = sitAnimationIota++,
+        sitAnimationIndexes.ErgonomicChair = sitAnimationIota++,
         "upper_idle_breath.fbx"
       },
     }
