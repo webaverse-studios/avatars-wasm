@@ -141,7 +141,7 @@ namespace AnimationSystem {
     float sprintFactor;
     float movementsTransitionFactor;
     float randomSittingIdleTime;
-    float randomSittingIdleLeastDuration;
+    float randomSittingIdleDuration;
     float randomSittingIdleSpeed;
 
     // states
