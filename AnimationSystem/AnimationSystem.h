@@ -91,8 +91,6 @@ namespace AnimationSystem {
     std::string boneName;
     bool isTop;
     bool isArm;
-    bool isFirstBone;
-    bool isLastBone;
   };
 
   class Avatar {
@@ -186,17 +184,9 @@ namespace AnimationSystem {
     int hurtAnimationIndex;
     int unuseAnimationIndex;
     int aimAnimationIndex;
+    int randomSittingIdleAnimationIndex;
 
     std::vector<int> useAnimationEnvelopeIndices;
-
-    // for random sitting idle animations
-    // todo: del `last`
-    bool isRandomSittingIdle = false;
-    int lastRandomSittingIdleIndex = -1;
-    float lastRandomSittingIdleStartTimeS = 0;
-    float lastRandomSittingIdleEndTimeS = 0;
-    int lastRandomIntervalTimeS = rand() % 13 + 3; // 3 ~ 15
-    float lastRandomSpeed = rand() % 76 / 100 + 0.25; // 0.25 ~ 1
 
     //
     
@@ -218,7 +208,7 @@ namespace AnimationSystem {
 
   // ------
   // need run in this order
-  void createAnimationMapping(bool isPosition, unsigned int index, bool isTop, bool isArm, char *scratchStack, unsigned int nameByteLength, bool isFirstBone, bool isLastBone);
+  void createAnimationMapping(bool isPosition, unsigned int index, bool isTop, bool isArm, char *scratchStack, unsigned int nameByteLength);
   Animation *createAnimation(char *scratchStack, unsigned int nameByteLength, float duration);
   void createAnimationInterpolant(Animation *animation, unsigned int numParameterPositions, float *parameterPositions, unsigned int numSampleValues, float *sampleValues, unsigned int valueSize);
   unsigned int initAnimationSystem(char *scratchStack);

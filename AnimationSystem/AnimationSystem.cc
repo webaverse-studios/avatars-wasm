@@ -232,7 +232,6 @@ namespace AnimationSystem {
     return avatar;
   }
   unsigned int initAnimationSystem(char *scratchStack) { // only need init once globally
-    srand(time(0));
     std::string jsonStr;
 
     if (!isInitedAnimationSystem) {
@@ -485,7 +484,6 @@ namespace AnimationSystem {
 
     // --- end: Update & Get value of ActionInterpolants
 
-    // todo: move to `addAction()` ?    
     if (this->actions["emote"] == nullptr) {
       this->emoteAnimationIndex = -1;
     } else {
@@ -589,7 +587,7 @@ namespace AnimationSystem {
       this->randomSittingIdleState = true;
       this->randomSittingIdleLeastDuration = j["leastDuration"];
       this->randomSittingIdleSpeed = j["speed"];
-      this->lastRandomSittingIdleIndex = animationGroupsMap["randomSittingIdle"][this->actions["randomSittingIdle"]["animation"]].index;
+      this->randomSittingIdleAnimationIndex = animationGroupsMap["randomSittingIdle"][this->actions["randomSittingIdle"]["animation"]].index;
     }
   }
   void Avatar::removeAction(char *scratchStack, unsigned int stringByteLength) {
@@ -679,15 +677,13 @@ namespace AnimationSystem {
     animationMixer->animationValues = new float[_animationMappings.size() * 4];
     return animationMixer;
   }
-  void createAnimationMapping(bool isPosition, unsigned int index, bool isTop, bool isArm, char *scratchStack, unsigned int nameByteLength, bool isFirstBone, bool isLastBone) {
+  void createAnimationMapping(bool isPosition, unsigned int index, bool isTop, bool isArm, char *scratchStack, unsigned int nameByteLength) {
     AnimationMapping animationMapping;
 
     animationMapping.isPosition = isPosition;
     animationMapping.index = index;
     animationMapping.isTop = isTop;
     animationMapping.isArm = isArm;
-    animationMapping.isFirstBone = isFirstBone;
-    animationMapping.isLastBone = isLastBone;
 
     std::string boneName = "";
     for (unsigned int i = 0; i < nameByteLength; i++) {
@@ -889,7 +885,7 @@ namespace AnimationSystem {
 
       interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
     } else if (avatar->randomSittingIdleState) { // note: random sitting idle animations.
-      Animation *randomSittingIdleAnimation = animationGroups[animationGroupIndexes.RandomSittingIdle][avatar->lastRandomSittingIdleIndex];
+      Animation *randomSittingIdleAnimation = animationGroups[animationGroupIndexes.RandomSittingIdle][avatar->randomSittingIdleAnimationIndex];
       float timeS = avatar->randomSittingIdleTime / 1000;
       float duration = avatar->randomSittingIdleLeastDuration;
       duration /= avatar->randomSittingIdleSpeed;
