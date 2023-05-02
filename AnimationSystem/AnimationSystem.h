@@ -140,6 +140,9 @@ namespace AnimationSystem {
     float movementsTime;
     float sprintFactor;
     float movementsTransitionFactor;
+    float randomSittingIdleTime;
+    float randomSittingIdleDuration;
+    float randomSittingIdleSpeed;
 
     // states
     bool jumpState;
@@ -166,6 +169,7 @@ namespace AnimationSystem {
     bool leftHandState;
     bool sprintState;
     bool movementsState;
+    bool randomSittingIdleState;
 
     //
     bool landWithMoving;
@@ -180,6 +184,7 @@ namespace AnimationSystem {
     int hurtAnimationIndex;
     int unuseAnimationIndex;
     int aimAnimationIndex;
+    int randomSittingIdleAnimationIndex;
 
     std::vector<int> useAnimationEnvelopeIndices;
 

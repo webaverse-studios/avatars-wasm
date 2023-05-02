@@ -227,6 +227,7 @@ namespace AnimationSystem {
     avatar->actionInterpolants["sprint"] = new BiActionInterpolant(0, 200);
     avatar->actionInterpolants["movements"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["movementsTransition"] = new BiActionInterpolant(0, 200);
+    avatar->actionInterpolants["randomSittingIdle"] = new InfiniteActionInterpolant(0);
 
     return avatar;
   }
@@ -378,6 +379,7 @@ namespace AnimationSystem {
     this->actionInterpolants["sprint"]->update(timeDiff, this->sprintState);
     this->actionInterpolants["movements"]->update(timeDiff, this->movementsState);
     this->actionInterpolants["movementsTransition"]->update(timeDiff, this->movementsState);
+    this->actionInterpolants["randomSittingIdle"]->update(timeDiff, this->randomSittingIdleState);
   }
   void Avatar::update(float *scratchStack) {
     unsigned int index = 0;
@@ -477,6 +479,8 @@ namespace AnimationSystem {
 
     float movementsTransitionTime = this->actionInterpolants["movementsTransition"]->get();
     this->movementsTransitionFactor = fmin(fmax(movementsTransitionTime / 200, 0), 1);
+
+    this->randomSittingIdleTime = this->actionInterpolants["randomSittingIdle"]->get();
 
     // --- end: Update & Get value of ActionInterpolants
 
@@ -579,6 +583,11 @@ namespace AnimationSystem {
       this->sprintState = true;
     } else if (j["type"] == "movements") {
       this->movementsState = true;
+    } else if (j["type"] == "randomSittingIdle") {
+      this->randomSittingIdleState = true;
+      this->randomSittingIdleDuration = j["duration"];
+      this->randomSittingIdleSpeed = j["speed"];
+      this->randomSittingIdleAnimationIndex = animationGroupsMap["randomSittingIdle"][this->actions["randomSittingIdle"]["animation"]].index;
     }
   }
   void Avatar::removeAction(char *scratchStack, unsigned int stringByteLength) {
@@ -640,6 +649,8 @@ namespace AnimationSystem {
       this->sprintState = false;
     } else if (j["type"] == "movements") {
       this->movementsState = false;
+    } else if (j["type"] == "randomSittingIdle") {
+      this->randomSittingIdleState = false;
     }
   }
   float Avatar::getActionInterpolant(char *scratchStack, unsigned int stringByteLength, unsigned int type) { // 0: get(), 1: getNormalized(), 2: getInverse()
@@ -858,11 +869,12 @@ namespace AnimationSystem {
   void _blendSit(AnimationMapping &spec, Avatar *avatar) {
 
     Animation *sitAnimation = animationGroups[animationGroupIndexes.Sit][avatar->sitAnimationIndex == -1 ? defaultSitAnimationIndex : avatar->sitAnimationIndex];
-    float *v2 = evaluateInterpolant(sitAnimation, spec.index, 1);
+    float t2 = fmod(AnimationMixer::nowS, sitAnimation->duration);
+    float *v2 = evaluateInterpolant(sitAnimation, spec.index, t2);
 
     copyValue(spec.dst, v2, spec.isPosition);
 
-    if (avatar->emoteFactor > 0) {
+    if (avatar->emoteFactor > 0) { // note: sitting emote animations ( body animations, not facepose/morphtarget animations ).
       Animation *emoteAnimation = animationGroups[animationGroupIndexes.EmoteSitting][avatar->emoteAnimationIndex < 0 ? defaultEmoteAnimationIndex : avatar->emoteAnimationIndex];
       float emoteTime = AnimationMixer::nowS * 1000 - avatar->lastEmoteTime;
       float t2 = min(emoteTime / 1000, emoteAnimation->duration);
@@ -871,6 +883,17 @@ namespace AnimationSystem {
       float emoteFactorS = avatar->emoteFactor / crouchMaxTime;
       float f = min(max(emoteFactorS, 0), 1);
 
+      interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
+    } else if (avatar->randomSittingIdleState) { // note: random sitting idle animations.
+      Animation *randomSittingIdleAnimation = animationGroups[animationGroupIndexes.RandomSittingIdle][avatar->randomSittingIdleAnimationIndex];
+      float timeS = avatar->randomSittingIdleTime / 1000;
+      float t2 = min(timeS, avatar->randomSittingIdleDuration);
+      float *v2 = evaluateInterpolant(randomSittingIdleAnimation, spec.index, t2 * avatar->randomSittingIdleSpeed);
+
+      float f0 = t2 / 0.2;
+      float f1 = (avatar->randomSittingIdleDuration - t2) / 0.2;
+      float f = min(f0, f1);
+      f = min(1, f);
       interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
     }
   }

@@ -99,6 +99,7 @@ public:
   int Dance;
   int Emote;
   int EmoteSitting;
+  int RandomSittingIdle;
   int Hold;
   int Hurt;
   int Land;
@@ -264,6 +265,17 @@ public:
 };
 EmoteSittingAnimationIndexes emoteSittingAnimationIndexes;
 
+int randomSittingIdleAnimationIota = 0;
+class RandomSittingIdleAnimationIndexes {
+public:
+  int upperIdleHandsExtend;
+  int upperIdleNeckShift;
+  int upperIdleForwardShift;
+  int upperIdleShift;
+  int upperIdleForwardShiftUp;
+};
+RandomSittingIdleAnimationIndexes randomSittingIdleAnimationIndexes;
+
 int holdAnimationIota = 0;
 class HoldAnimationIndexes {
 public:
@@ -313,6 +325,7 @@ public:
   int Chair;
   int Saddle;
   int Stand;
+  int ErgonomicChair;
 };
 SitAnimationIndexes sitAnimationIndexes;
 
@@ -821,6 +834,37 @@ AnimationGroupDeclarations declarations = {
     }
   },
   {
+    "randomSittingIdle",
+    animationGroupIndexes.RandomSittingIdle = animationGroupIota++,
+    {
+      {
+        "upperIdleHandsExtend",
+        randomSittingIdleAnimationIndexes.upperIdleHandsExtend = randomSittingIdleAnimationIota++,
+        "upper_idle_hands_extend.fbx"
+      },
+      {
+        "upperIdleNeckShift",
+        randomSittingIdleAnimationIndexes.upperIdleNeckShift = randomSittingIdleAnimationIota++,
+        "upper_idle_neck_shift.fbx"
+      },
+      {
+        "upperIdleForwardShift",
+        randomSittingIdleAnimationIndexes.upperIdleForwardShift = randomSittingIdleAnimationIota++,
+        "upper_idle_forward_shift.fbx"
+      },
+      {
+        "upperIdleShift",
+        randomSittingIdleAnimationIndexes.upperIdleShift = randomSittingIdleAnimationIota++,
+        "upper_idle_shift.fbx"
+      },
+      {
+        "upperIdleForwardShiftUp",
+        randomSittingIdleAnimationIndexes.upperIdleForwardShiftUp = randomSittingIdleAnimationIota++,
+        "upper_idle_forward_shift_up.fbx"
+      },
+    }
+  },
+  {
     "hold",
     animationGroupIndexes.Hold = animationGroupIota++,
     {
@@ -936,8 +980,8 @@ AnimationGroupDeclarations declarations = {
       },
       {
         "ergonomicChair",
-        sitAnimationIndexes.Stand = sitAnimationIota++,
-        "full_body_idle.fbx"
+        sitAnimationIndexes.ErgonomicChair = sitAnimationIota++,
+        "upper_idle_breath.fbx"
       },
     }
   },
