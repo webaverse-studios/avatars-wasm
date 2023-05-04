@@ -251,7 +251,6 @@ public:
   int AngryFists;
   int Apologetic;
   int ArmsUp;
-  int Breath;
   int Confused;
   int Cry;
   int Disagree;
@@ -266,10 +265,10 @@ public:
   int Listen;
   int NgeHand;
   int Sad;
-  int Dejected;
   int Scary;
   int Surprise;
   int Tantrum;
+  int Victory;
 };
 EmoteCompanionAnimationIndexes emoteCompanionAnimationIndexes;
 
@@ -802,11 +801,6 @@ AnimationGroupDeclarations declarations = {
         "arms_up.fbx"
       },
       {
-        "breath",
-        emoteCompanionAnimationIndexes.Breath = emoteCompanionAnimationIota++,
-        "breath.fbx"
-      },
-      {
         "confused",
         emoteCompanionAnimationIndexes.Confused = emoteCompanionAnimationIota++,
         "confused.fbx"
@@ -877,11 +871,6 @@ AnimationGroupDeclarations declarations = {
         "sad_2.fbx"
       },
       {
-        "dejected",
-        emoteCompanionAnimationIndexes.Dejected = emoteCompanionAnimationIota++,
-        "sad_3.fbx"
-      },
-      {
         "scary",
         emoteCompanionAnimationIndexes.Scary = emoteCompanionAnimationIota++,
         "scary.fbx"
@@ -895,6 +884,11 @@ AnimationGroupDeclarations declarations = {
         "tantrum",
         emoteCompanionAnimationIndexes.Tantrum = emoteCompanionAnimationIota++,
         "tantrum.fbx"
+      },
+      {
+        "victory",
+        emoteCompanionAnimationIndexes.Victory = emoteCompanionAnimationIota++,
+        "victory.fbx"
       },
     }
   },
