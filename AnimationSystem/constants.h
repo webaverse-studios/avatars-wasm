@@ -248,6 +248,7 @@ int emoteCompanionAnimationIota = 0;
 class EmoteCompanionAnimationIndexes {
 public:
   int Agree;
+  int Alert;
   int AngryFists;
   int Apologetic;
   int ArmsUp;
@@ -259,6 +260,7 @@ public:
   int Explain;
   int HandChin;
   int HandInFace;
+  int HeadNod;
   int HeadShake;
   int HeadShift;
   int Keybaord;
@@ -786,6 +788,11 @@ AnimationGroupDeclarations declarations = {
         "agree.fbx"
       },
       {
+        "alert",
+        emoteCompanionAnimationIndexes.Alert = emoteCompanionAnimationIota++,
+        "alert.fbx"
+      },
+      {
         "angryFists",
         emoteCompanionAnimationIndexes.AngryFists = emoteCompanionAnimationIota++,
         "angry_fists.fbx"
@@ -839,6 +846,11 @@ AnimationGroupDeclarations declarations = {
         "handInFace",
         emoteCompanionAnimationIndexes.HandInFace = emoteCompanionAnimationIota++,
         "hand_in_face.fbx"
+      },
+      {
+        "headNod",
+        emoteCompanionAnimationIndexes.HeadNod = emoteCompanionAnimationIota++,
+        "head_nod.fbx"
       },
       {
         "headShake",
