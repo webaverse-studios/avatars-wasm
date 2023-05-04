@@ -243,6 +243,35 @@ public:
 };
 EmoteAnimationIndexes emoteAnimationIndexes;
 
+int emoteCompanionAnimationIota = 0;
+class EmoteCompanionAnimationIndexes {
+public:
+  int Agree;
+  int AngryFists;
+  int Apologetic;
+  int ArmsUp;
+  int Breath;
+  int Confused;
+  int Cry;
+  int Disagree;
+  int Embarrassed;
+  int Excited;
+  int Explain;
+  int HandChin;
+  int HandInFace;
+  int HeadShake;
+  int HeadShift;
+  int Keybaord;
+  int Listen;
+  int NgeHand;
+  int Sad;
+  int Dejected;
+  int Scary;
+  int Surprise;
+  int Tantrum;
+};
+EmoteCompanionAnimationIndexes emoteCompanionAnimationIndexes;
+
 int emoteSittingAnimationIota = 0;
 class EmoteSittingAnimationIndexes {
 public:
@@ -744,6 +773,127 @@ AnimationGroupDeclarations declarations = {
         "victorySoft",
         emoteAnimationIndexes.VictorySoft = emoteAnimationIota++,
         "victory_soft.fbx"
+      },
+    }
+  },
+  {
+    "emoteCompanion",
+    animationGroupIndexes.EmoteCompanion = animationGroupIota++,
+    {
+      {
+        "agree",
+        emoteAnimationIndexes.Agree = emoteCompanionAnimationIota++,
+        "agree.fbx"
+      },
+      {
+        "angryFists",
+        emoteAnimationIndexes.AngryFists = emoteCompanionAnimationIota++,
+        "angry_fists.fbx"
+      },
+      {
+        "apologetic",
+        emoteAnimationIndexes.Apologetic = emoteCompanionAnimationIota++,
+        "apologetic.fbx"
+      },
+      {
+        "armsUp",
+        emoteAnimationIndexes.ArmsUp = emoteCompanionAnimationIota++,
+        "arms_up.fbx"
+      },
+      {
+        "breath",
+        emoteAnimationIndexes.Breath = emoteCompanionAnimationIota++,
+        "breath.fbx"
+      },
+      {
+        "confused",
+        emoteAnimationIndexes.Confused = emoteCompanionAnimationIota++,
+        "confused.fbx"
+      },
+      {
+        "cry",
+        emoteAnimationIndexes.Cry = emoteCompanionAnimationIota++,
+        "cry.fbx"
+      },
+      {
+        "disagree",
+        emoteAnimationIndexes.Disagree = emoteCompanionAnimationIota++,
+        "disagree.fbx"
+      },
+      {
+        "embarrassed",
+        emoteAnimationIndexes.Embarrassed = emoteCompanionAnimationIota++,
+        "embarrassed_2.fbx"
+      },
+      {
+        "excited",
+        emoteAnimationIndexes.Excited = emoteCompanionAnimationIota++,
+        "excited.fbx"
+      },
+      {
+        "explain",
+        emoteAnimationIndexes.Explain = emoteCompanionAnimationIota++,
+        "explain.fbx"
+      },
+      {
+        "handChin",
+        emoteAnimationIndexes.HandChin = emoteCompanionAnimationIota++,
+        "hand_chin.fbx"
+      },
+      {
+        "handInFace",
+        emoteAnimationIndexes.HandInFace = emoteCompanionAnimationIota++,
+        "hand_in_face.fbx"
+      },
+      {
+        "headShake",
+        emoteAnimationIndexes.HeadShake = emoteCompanionAnimationIota++,
+        "head_shake_2.fbx"
+      },
+      {
+        "headShift",
+        emoteAnimationIndexes.HeadShift = emoteCompanionAnimationIota++,
+        "head_shift.fbx"
+      },
+      {
+        "keybaord",
+        emoteAnimationIndexes.Keybaord = emoteCompanionAnimationIota++,
+        "keybaord.fbx"
+      },
+      {
+        "listen",
+        emoteAnimationIndexes.Listen = emoteCompanionAnimationIota++,
+        "listen.fbx"
+      },
+      {
+        "ngeHand",
+        emoteAnimationIndexes.NgeHand = emoteCompanionAnimationIota++,
+        "nge_hand.fbx"
+      },
+      {
+        "sad",
+        emoteAnimationIndexes.Sad = emoteCompanionAnimationIota++,
+        "sad_2.fbx"
+      },
+      {
+        "dejected",
+        emoteAnimationIndexes.Dejected = emoteCompanionAnimationIota++,
+        "sad_3.fbx"
+      },
+      {
+        "scary",
+        emoteAnimationIndexes.Scary = emoteCompanionAnimationIota++,
+        "scary.fbx"
+      },
+      {
+        "surprise",
+        emoteAnimationIndexes.Surprise = emoteCompanionAnimationIota++,
+        "surprise_2.fbx"
+      },
+      {
+        "tantrum",
+        emoteAnimationIndexes.Tantrum = emoteCompanionAnimationIota++,
+        "tantrum.fbx"
       },
     }
   },
