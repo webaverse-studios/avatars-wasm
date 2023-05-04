@@ -98,6 +98,7 @@ public:
   int Aim;
   int Dance;
   int Emote;
+  int EmoteCompanion;
   int EmoteSitting;
   int RandomSittingIdle;
   int Hold;
