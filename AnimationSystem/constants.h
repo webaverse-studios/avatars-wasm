@@ -782,117 +782,117 @@ AnimationGroupDeclarations declarations = {
     {
       {
         "agree",
-        emoteAnimationIndexes.Agree = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.Agree = emoteCompanionAnimationIota++,
         "agree.fbx"
       },
       {
         "angryFists",
-        emoteAnimationIndexes.AngryFists = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.AngryFists = emoteCompanionAnimationIota++,
         "angry_fists.fbx"
       },
       {
         "apologetic",
-        emoteAnimationIndexes.Apologetic = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.Apologetic = emoteCompanionAnimationIota++,
         "apologetic.fbx"
       },
       {
         "armsUp",
-        emoteAnimationIndexes.ArmsUp = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.ArmsUp = emoteCompanionAnimationIota++,
         "arms_up.fbx"
       },
       {
         "breath",
-        emoteAnimationIndexes.Breath = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.Breath = emoteCompanionAnimationIota++,
         "breath.fbx"
       },
       {
         "confused",
-        emoteAnimationIndexes.Confused = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.Confused = emoteCompanionAnimationIota++,
         "confused.fbx"
       },
       {
         "cry",
-        emoteAnimationIndexes.Cry = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.Cry = emoteCompanionAnimationIota++,
         "cry.fbx"
       },
       {
         "disagree",
-        emoteAnimationIndexes.Disagree = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.Disagree = emoteCompanionAnimationIota++,
         "disagree.fbx"
       },
       {
         "embarrassed",
-        emoteAnimationIndexes.Embarrassed = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.Embarrassed = emoteCompanionAnimationIota++,
         "embarrassed_2.fbx"
       },
       {
         "excited",
-        emoteAnimationIndexes.Excited = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.Excited = emoteCompanionAnimationIota++,
         "excited.fbx"
       },
       {
         "explain",
-        emoteAnimationIndexes.Explain = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.Explain = emoteCompanionAnimationIota++,
         "explain.fbx"
       },
       {
         "handChin",
-        emoteAnimationIndexes.HandChin = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.HandChin = emoteCompanionAnimationIota++,
         "hand_chin.fbx"
       },
       {
         "handInFace",
-        emoteAnimationIndexes.HandInFace = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.HandInFace = emoteCompanionAnimationIota++,
         "hand_in_face.fbx"
       },
       {
         "headShake",
-        emoteAnimationIndexes.HeadShake = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.HeadShake = emoteCompanionAnimationIota++,
         "head_shake_2.fbx"
       },
       {
         "headShift",
-        emoteAnimationIndexes.HeadShift = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.HeadShift = emoteCompanionAnimationIota++,
         "head_shift.fbx"
       },
       {
         "keybaord",
-        emoteAnimationIndexes.Keybaord = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.Keybaord = emoteCompanionAnimationIota++,
         "keybaord.fbx"
       },
       {
         "listen",
-        emoteAnimationIndexes.Listen = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.Listen = emoteCompanionAnimationIota++,
         "listen.fbx"
       },
       {
         "ngeHand",
-        emoteAnimationIndexes.NgeHand = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.NgeHand = emoteCompanionAnimationIota++,
         "nge_hand.fbx"
       },
       {
         "sad",
-        emoteAnimationIndexes.Sad = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.Sad = emoteCompanionAnimationIota++,
         "sad_2.fbx"
       },
       {
         "dejected",
-        emoteAnimationIndexes.Dejected = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.Dejected = emoteCompanionAnimationIota++,
         "sad_3.fbx"
       },
       {
         "scary",
-        emoteAnimationIndexes.Scary = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.Scary = emoteCompanionAnimationIota++,
         "scary.fbx"
       },
       {
         "surprise",
-        emoteAnimationIndexes.Surprise = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.Surprise = emoteCompanionAnimationIota++,
         "surprise_2.fbx"
       },
       {
         "tantrum",
-        emoteAnimationIndexes.Tantrum = emoteCompanionAnimationIota++,
+        emoteCompanionAnimationIndexes.Tantrum = emoteCompanionAnimationIota++,
         "tantrum.fbx"
       },
     }
