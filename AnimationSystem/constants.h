@@ -249,7 +249,8 @@ class EmoteCompanionAnimationIndexes {
 public:
   int Agree;
   int Alert;
-  int AngryFists;
+  int Upset;
+  int Angry;
   int Apologetic;
   int ArmsUp;
   int Confused;
@@ -267,6 +268,7 @@ public:
   int Listen;
   int NgeHand;
   int Sad;
+  int Dejected;
   int Scary;
   int Surprise;
   int Tantrum;
@@ -793,9 +795,14 @@ AnimationGroupDeclarations declarations = {
         "alert.fbx"
       },
       {
-        "angryFists",
-        emoteCompanionAnimationIndexes.AngryFists = emoteCompanionAnimationIota++,
+        "upset",
+        emoteCompanionAnimationIndexes.Upset = emoteCompanionAnimationIota++,
         "angry_fists.fbx"
+      },
+      {
+        "angry",
+        emoteCompanionAnimationIndexes.Angry = emoteCompanionAnimationIota++,
+        "angry.fbx"
       },
       {
         "apologetic",
@@ -883,6 +890,11 @@ AnimationGroupDeclarations declarations = {
         "sad_2.fbx"
       },
       {
+        "dejected",
+        emoteCompanionAnimationIndexes.Dejected = emoteCompanionAnimationIota++,
+        "sad.fbx"
+      },
+      {
         "scary",
         emoteCompanionAnimationIndexes.Scary = emoteCompanionAnimationIota++,
         "scary.fbx"
@@ -890,7 +902,7 @@ AnimationGroupDeclarations declarations = {
       {
         "surprise",
         emoteCompanionAnimationIndexes.Surprise = emoteCompanionAnimationIota++,
-        "surprise_2.fbx"
+        "surprise.fbx"
       },
       {
         "tantrum",
