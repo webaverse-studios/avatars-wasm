@@ -264,7 +264,7 @@ public:
   int HeadNod;
   int HeadShake;
   int HeadShift;
-  int Keybaord;
+  int Keyboard;
   int Listen;
   int NgeHand;
   int Sad;
@@ -870,9 +870,9 @@ AnimationGroupDeclarations declarations = {
         "head_shift.fbx"
       },
       {
-        "keybaord",
-        emoteCompanionAnimationIndexes.Keybaord = emoteCompanionAnimationIota++,
-        "keybaord.fbx"
+        "keyboard",
+        emoteCompanionAnimationIndexes.Keyboard = emoteCompanionAnimationIota++,
+        "keyboard.fbx"
       },
       {
         "listen",
