@@ -248,7 +248,6 @@ int emoteCompanionAnimationIota = 0;
 class EmoteCompanionAnimationIndexes {
 public:
   int Agree;
-  int Alert;
   int Angry;
   int Apologetic;
   int ArmsUp;
@@ -786,11 +785,6 @@ AnimationGroupDeclarations declarations = {
         "agree",
         emoteCompanionAnimationIndexes.Agree = emoteCompanionAnimationIota++,
         "agree.fbx"
-      },
-      {
-        "alert",
-        emoteCompanionAnimationIndexes.Alert = emoteCompanionAnimationIota++,
-        "alert.fbx"
       },
       {
         "angry",
