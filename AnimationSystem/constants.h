@@ -249,7 +249,6 @@ class EmoteCompanionAnimationIndexes {
 public:
   int Agree;
   int Alert;
-  int Upset;
   int Angry;
   int Apologetic;
   int ArmsUp;
@@ -268,7 +267,6 @@ public:
   int Listen;
   int NgeHand;
   int Sad;
-  int Dejected;
   int Scary;
   int Surprise;
   int Tantrum;
@@ -795,14 +793,9 @@ AnimationGroupDeclarations declarations = {
         "alert.fbx"
       },
       {
-        "upset",
-        emoteCompanionAnimationIndexes.Upset = emoteCompanionAnimationIota++,
-        "angry_fists.fbx"
-      },
-      {
         "angry",
         emoteCompanionAnimationIndexes.Angry = emoteCompanionAnimationIota++,
-        "angry.fbx"
+        "angry_fists.fbx"
       },
       {
         "apologetic",
@@ -845,11 +838,6 @@ AnimationGroupDeclarations declarations = {
         "explain.fbx"
       },
       {
-        "handChin",
-        emoteCompanionAnimationIndexes.HandChin = emoteCompanionAnimationIota++,
-        "hand_chin.fbx"
-      },
-      {
         "handInFace",
         emoteCompanionAnimationIndexes.HandInFace = emoteCompanionAnimationIota++,
         "hand_in_face.fbx"
@@ -880,19 +868,9 @@ AnimationGroupDeclarations declarations = {
         "listen.fbx"
       },
       {
-        "ngeHand",
-        emoteCompanionAnimationIndexes.NgeHand = emoteCompanionAnimationIota++,
-        "nge_hand.fbx"
-      },
-      {
         "sad",
         emoteCompanionAnimationIndexes.Sad = emoteCompanionAnimationIota++,
         "sad_2.fbx"
-      },
-      {
-        "dejected",
-        emoteCompanionAnimationIndexes.Dejected = emoteCompanionAnimationIota++,
-        "sad.fbx"
       },
       {
         "scary",
