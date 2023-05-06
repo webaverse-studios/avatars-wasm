@@ -247,28 +247,18 @@ EmoteAnimationIndexes emoteAnimationIndexes;
 int emoteCompanionAnimationIota = 0;
 class EmoteCompanionAnimationIndexes {
 public:
+  int Alert;
   int Agree;
   int Angry;
   int Apologetic;
-  int ArmsUp;
   int Confused;
   int Cry;
   int Disagree;
   int Embarrassed;
   int Excited;
-  int Explain;
-  int HandChin;
-  int HandInFace;
-  int HeadNod;
-  int HeadShake;
-  int HeadShift;
   int Keyboard;
-  int Listen;
-  int NgeHand;
   int Sad;
-  int Scary;
   int Surprise;
-  int Tantrum;
   int Victory;
 };
 EmoteCompanionAnimationIndexes emoteCompanionAnimationIndexes;
@@ -782,6 +772,11 @@ AnimationGroupDeclarations declarations = {
     animationGroupIndexes.EmoteCompanion = animationGroupIota++,
     {
       {
+        "alert",
+        emoteCompanionAnimationIndexes.Alert = emoteCompanionAnimationIota++,
+        "alert.fbx"
+      },
+      {
         "agree",
         emoteCompanionAnimationIndexes.Agree = emoteCompanionAnimationIota++,
         "agree.fbx"
@@ -795,11 +790,6 @@ AnimationGroupDeclarations declarations = {
         "apologetic",
         emoteCompanionAnimationIndexes.Apologetic = emoteCompanionAnimationIota++,
         "apologetic.fbx"
-      },
-      {
-        "armsUp",
-        emoteCompanionAnimationIndexes.ArmsUp = emoteCompanionAnimationIota++,
-        "arms_up.fbx"
       },
       {
         "confused",
@@ -827,39 +817,9 @@ AnimationGroupDeclarations declarations = {
         "excited.fbx"
       },
       {
-        "explain",
-        emoteCompanionAnimationIndexes.Explain = emoteCompanionAnimationIota++,
-        "explain.fbx"
-      },
-      {
-        "handInFace",
-        emoteCompanionAnimationIndexes.HandInFace = emoteCompanionAnimationIota++,
-        "hand_in_face.fbx"
-      },
-      {
-        "headNod",
-        emoteCompanionAnimationIndexes.HeadNod = emoteCompanionAnimationIota++,
-        "head_nod.fbx"
-      },
-      {
-        "headShake",
-        emoteCompanionAnimationIndexes.HeadShake = emoteCompanionAnimationIota++,
-        "head_shake_2.fbx"
-      },
-      {
-        "headShift",
-        emoteCompanionAnimationIndexes.HeadShift = emoteCompanionAnimationIota++,
-        "head_shift.fbx"
-      },
-      {
         "keyboard",
         emoteCompanionAnimationIndexes.Keyboard = emoteCompanionAnimationIota++,
         "keyboard.fbx"
-      },
-      {
-        "listen",
-        emoteCompanionAnimationIndexes.Listen = emoteCompanionAnimationIota++,
-        "listen.fbx"
       },
       {
         "sad",
@@ -867,19 +827,9 @@ AnimationGroupDeclarations declarations = {
         "sad_2.fbx"
       },
       {
-        "scary",
-        emoteCompanionAnimationIndexes.Scary = emoteCompanionAnimationIota++,
-        "scary.fbx"
-      },
-      {
         "surprise",
         emoteCompanionAnimationIndexes.Surprise = emoteCompanionAnimationIota++,
         "surprise.fbx"
-      },
-      {
-        "tantrum",
-        emoteCompanionAnimationIndexes.Tantrum = emoteCompanionAnimationIota++,
-        "tantrum.fbx"
       },
       {
         "victory",
