@@ -926,6 +926,7 @@ namespace AnimationSystem {
   }
 
   void _blendIdle(AnimationMapping &spec, Avatar *avatar) {
+    _handleDefault(spec, avatar); 
     Animation *randomIdleAnimation = animationGroups[animationGroupIndexes.RandomIdle][avatar->randomIdleAnimationIndex];
     float timeS = avatar->randomIdleTime / 1000;
     float t2 = min(timeS, avatar->randomIdleDuration);
