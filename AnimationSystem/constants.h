@@ -100,6 +100,7 @@ public:
   int Emote;
   int EmoteCompanion;
   int EmoteSitting;
+  int RandomIdle;
   int RandomSittingIdle;
   int Hold;
   int Hurt;
@@ -284,6 +285,22 @@ public:
   int VictorySoft;
 };
 EmoteSittingAnimationIndexes emoteSittingAnimationIndexes;
+
+int randomIdleAnimationIota = 0;
+class RandomIdleAnimationIndexes {
+public:
+  int ArmsUp;
+  int Breath;
+  int Explain;
+  int HandInFace;
+  int HeadNod;
+  int HeadShake;
+  int HeadShift;
+  int Listen;
+  int Scary;
+  int Tantrum;
+};
+RandomIdleAnimationIndexes randomIdleAnimationIndexes;
 
 int randomSittingIdleAnimationIota = 0;
 class RandomSittingIdleAnimationIndexes {
@@ -921,6 +938,62 @@ AnimationGroupDeclarations declarations = {
         "victorySoft",
         emoteSittingAnimationIndexes.VictorySoft = emoteSittingAnimationIota++,
         "victory_soft.fbx"
+      },
+    }
+  },
+  {
+    "randomIdle",
+    animationGroupIndexes.RandomIdle = animationGroupIota++,
+    {
+      {
+        "armsUp",
+        randomIdleAnimationIndexes.ArmsUp = randomIdleAnimationIota++,
+        "arms_up.fbx"
+      },
+      {
+        "breath",
+        randomIdleAnimationIndexes.Breath = randomIdleAnimationIota++,
+        "breath.fbx"
+      },
+      {
+        "explain",
+        randomIdleAnimationIndexes.Explain = randomIdleAnimationIota++,
+        "explain.fbx"
+      },
+      {
+        "handInFace",
+        randomIdleAnimationIndexes.HandInFace = randomIdleAnimationIota++,
+        "hand_in_face.fbx"
+      },
+      {
+        "headNod",
+        randomIdleAnimationIndexes.HeadNod = randomIdleAnimationIota++,
+        "head_nod.fbx"
+      },
+      {
+        "headShake",
+        randomIdleAnimationIndexes.HeadShake = randomIdleAnimationIota++,
+        "head_shake_2.fbx"
+      },
+      {
+        "headShift",
+        randomIdleAnimationIndexes.HeadShift = randomIdleAnimationIota++,
+        "head_shift.fbx"
+      },
+      {
+        "listen",
+        randomIdleAnimationIndexes.Listen = randomIdleAnimationIota++,
+        "listen.fbx"
+      },
+      {
+        "scary",
+        randomIdleAnimationIndexes.Scary = randomIdleAnimationIota++,
+        "scary.fbx"
+      },
+      {
+        "tantrum",
+        randomIdleAnimationIndexes.Tantrum = randomIdleAnimationIota++,
+        "tantrum.fbx"
       },
     }
   },

@@ -229,6 +229,7 @@ namespace AnimationSystem {
     avatar->actionInterpolants["sprint"] = new BiActionInterpolant(0, 200);
     avatar->actionInterpolants["movements"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["movementsTransition"] = new BiActionInterpolant(0, 200);
+    avatar->actionInterpolants["randomIdle"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["randomSittingIdle"] = new InfiniteActionInterpolant(0);
 
     return avatar;
@@ -383,6 +384,7 @@ namespace AnimationSystem {
     this->actionInterpolants["sprint"]->update(timeDiff, this->sprintState);
     this->actionInterpolants["movements"]->update(timeDiff, this->movementsState);
     this->actionInterpolants["movementsTransition"]->update(timeDiff, this->movementsState);
+    this->actionInterpolants["randomIdle"]->update(timeDiff, this->randomIdleState);
     this->actionInterpolants["randomSittingIdle"]->update(timeDiff, this->randomSittingIdleState);
   }
   void Avatar::update(float *scratchStack) {
@@ -487,6 +489,7 @@ namespace AnimationSystem {
     float movementsTransitionTime = this->actionInterpolants["movementsTransition"]->get();
     this->movementsTransitionFactor = fmin(fmax(movementsTransitionTime / 200, 0), 1);
 
+    this->randomIdleTime = this->actionInterpolants["randomIdle"]->get();
     this->randomSittingIdleTime = this->actionInterpolants["randomSittingIdle"]->get();
 
     // --- end: Update & Get value of ActionInterpolants
@@ -598,6 +601,11 @@ namespace AnimationSystem {
       this->sprintState = true;
     } else if (j["type"] == "movements") {
       this->movementsState = true;
+    } else if (j["type"] == "randomIdle") {
+      this->randomIdleState = true;
+      this->randomIdleDuration = j["duration"];
+      this->randomIdleSpeed = j["speed"];
+      this->randomIdleAnimationIndex = animationGroupsMap["randomIdle"][this->actions["randomIdle"]["animation"]].index;
     } else if (j["type"] == "randomSittingIdle") {
       this->randomSittingIdleState = true;
       this->randomSittingIdleDuration = j["duration"];
@@ -666,6 +674,8 @@ namespace AnimationSystem {
       this->sprintState = false;
     } else if (j["type"] == "movements") {
       this->movementsState = false;
+    } else if (j["type"] == "randomIdle") {
+      this->randomIdleState = false;
     } else if (j["type"] == "randomSittingIdle") {
       this->randomSittingIdleState = false;
     }
@@ -913,6 +923,19 @@ namespace AnimationSystem {
       f = min(1, f);
       interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
     }
+  }
+
+  void _blendIdle(AnimationMapping &spec, Avatar *avatar) {
+    Animation *randomIdleAnimation = animationGroups[animationGroupIndexes.RandomIdle][avatar->randomIdleAnimationIndex];
+    float timeS = avatar->randomIdleTime / 1000;
+    float t2 = min(timeS, avatar->randomIdleDuration);
+    float *v2 = evaluateInterpolant(randomIdleAnimation, spec.index, t2 * avatar->randomIdleSpeed);
+
+    float f0 = t2 / 0.2;
+    float f1 = (avatar->randomIdleDuration - t2) / 0.2;
+    float f = min(f0, f1);
+    f = min(1, f);
+    interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
   }
 
   void _blendNarutoRun(AnimationMapping &spec, Avatar *avatar) {
@@ -1462,6 +1485,8 @@ namespace AnimationSystem {
         _blendPickUp(spec, this->avatar);
       } else if (avatar->readyGrabTime > 0) {
         _blendReadyGrab(spec, this->avatar);
+      } else if (avatar->randomIdleState > 0) {
+        _blendIdle(spec, this->avatar);
       } else {
         _handleDefault(spec, this->avatar);
       }
