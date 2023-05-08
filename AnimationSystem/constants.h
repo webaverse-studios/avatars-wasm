@@ -257,6 +257,7 @@ public:
   int Disagree;
   int Embarrassed;
   int Excited;
+  int Explain;
   int Keyboard;
   int Sad;
   int Surprise;
@@ -291,9 +292,6 @@ class RandomIdleAnimationIndexes {
 public:
   int ArmsUp;
   int Breath;
-  int Explain;
-  int HandInFace;
-  int HeadNod;
   int HeadShake;
   int HeadShift;
   int Listen;
@@ -834,6 +832,11 @@ AnimationGroupDeclarations declarations = {
         "excited.fbx"
       },
       {
+        "explain",
+        emoteCompanionAnimationIndexes.Explain = emoteCompanionAnimationIota++,
+        "explain.fbx"
+      },
+      {
         "keyboard",
         emoteCompanionAnimationIndexes.Keyboard = emoteCompanionAnimationIota++,
         "keyboard.fbx"
@@ -954,21 +957,6 @@ AnimationGroupDeclarations declarations = {
         "breath",
         randomIdleAnimationIndexes.Breath = randomIdleAnimationIota++,
         "breath.fbx"
-      },
-      {
-        "explain",
-        randomIdleAnimationIndexes.Explain = randomIdleAnimationIota++,
-        "explain.fbx"
-      },
-      {
-        "handInFace",
-        randomIdleAnimationIndexes.HandInFace = randomIdleAnimationIota++,
-        "hand_in_face.fbx"
-      },
-      {
-        "headNod",
-        randomIdleAnimationIndexes.HeadNod = randomIdleAnimationIota++,
-        "head_nod.fbx"
       },
       {
         "headShake",
