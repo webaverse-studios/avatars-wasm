@@ -1020,8 +1020,13 @@ namespace AnimationSystem {
     float t2 = min(emoteCompanionTime / 1000, emoteCompanionAnimation->duration);
     float *v2 = evaluateInterpolant(emoteCompanionAnimation, spec.index, t2);
 
-    float emoteCompanionFactorS = avatar->emoteCompanionFactor / crouchMaxTime;
-    float f = min(max(emoteCompanionFactorS, 0), 1);
+    // float emoteCompanionFactorS = avatar->emoteCompanionFactor / crouchMaxTime;
+    // float f = min(max(emoteCompanionFactorS, 0), 1);
+
+    float f0 = t2 / 0.2;
+    float f1 = (emoteCompanionAnimation->duration - t2) / 0.2;
+    float f = min(f0, f1);
+    f = min(1, f);
 
     if (spec.index == boneIndexes.Spine || spec.index == boneIndexes.Chest || spec.index == boneIndexes.UpperChest || spec.index == boneIndexes.Neck || spec.index == boneIndexes.Head) {
       if (!spec.isPosition) {
