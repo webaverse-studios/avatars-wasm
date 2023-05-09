@@ -830,7 +830,22 @@ namespace AnimationSystem {
     }
     return resultVecQuat;
   }
+  void _blendIdle(AnimationMapping &spec, Avatar *avatar) {
+    localVecQuatPtr = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
+    interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr, 0, 1 - avatar->idleWalkFactor, spec.isPosition);
+    if (avatar->randomIdleState) {
+      Animation *randomIdleAnimation = animationGroups[animationGroupIndexes.RandomIdle][avatar->randomIdleAnimationIndex];
+      float timeS = avatar->randomIdleTime / 1000;
+      float t2 = min(timeS, avatar->randomIdleDuration);
+      float *v2 = evaluateInterpolant(randomIdleAnimation, spec.index, t2 * avatar->randomIdleSpeed);
 
+      float f0 = t2 / 0.2;
+      float f1 = (avatar->randomIdleDuration - t2) / 0.2;
+      float f = min(f0, f1);
+      f = min(1, f);
+      interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
+    }
+  }
   void _handleDefault(AnimationMapping &spec, Avatar *avatar) {
     // note: Big performance influnce!!! Do not update `directionsWeightsWithReverse` here, because of will run 53 times ( 53 bones )!!! todo: Notice codes which will run 53 times!!!
     // directionsWeightsWithReverse["forward"] = avatar->forwardFactor;
@@ -852,8 +867,9 @@ namespace AnimationSystem {
     _clearXZ(spec.dst, spec.isPosition);
 
     // blend idle ---
-    localVecQuatPtr = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
-    interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr, 0, 1 - avatar->idleWalkFactor, spec.isPosition);
+    // localVecQuatPtr = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
+    // interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr, 0, 1 - avatar->idleWalkFactor, spec.isPosition);
+    _blendIdle(spec, avatar);
 
     // crouchAnimations
     localVecQuatPtr2 = doBlendList(spec, animationGroups[animationGroupIndexes.Crouch], directionsWeightsWithReverse, avatar->landTimeS);
@@ -925,19 +941,7 @@ namespace AnimationSystem {
     }
   }
 
-  void _blendIdle(AnimationMapping &spec, Avatar *avatar) {
-    _handleDefault(spec, avatar); 
-    Animation *randomIdleAnimation = animationGroups[animationGroupIndexes.RandomIdle][avatar->randomIdleAnimationIndex];
-    float timeS = avatar->randomIdleTime / 1000;
-    float t2 = min(timeS, avatar->randomIdleDuration);
-    float *v2 = evaluateInterpolant(randomIdleAnimation, spec.index, t2 * avatar->randomIdleSpeed);
-
-    float f0 = t2 / 0.2;
-    float f1 = (avatar->randomIdleDuration - t2) / 0.2;
-    float f = min(f0, f1);
-    f = min(1, f);
-    interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
-  }
+  
 
   void _blendNarutoRun(AnimationMapping &spec, Avatar *avatar) {
 
@@ -1486,8 +1490,6 @@ namespace AnimationSystem {
         _blendPickUp(spec, this->avatar);
       } else if (avatar->readyGrabTime > 0) {
         _blendReadyGrab(spec, this->avatar);
-      } else if (avatar->randomIdleState > 0) {
-        _blendIdle(spec, this->avatar);
       } else {
         _handleDefault(spec, this->avatar);
       }
