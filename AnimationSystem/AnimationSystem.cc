@@ -601,6 +601,8 @@ namespace AnimationSystem {
       this->sprintState = true;
     } else if (j["type"] == "movements") {
       this->movementsState = true;
+    } else if (j["type"] == "breath") {
+      this->breathState = true;
     } else if (j["type"] == "randomIdle") {
       this->randomIdleState = true;
       this->randomIdleDuration = j["duration"];
@@ -674,6 +676,8 @@ namespace AnimationSystem {
       this->sprintState = false;
     } else if (j["type"] == "movements") {
       this->movementsState = false;
+    } else if (j["type"] == "breath") {
+      this->breathState = false;
     } else if (j["type"] == "randomIdle") {
       this->randomIdleState = false;
     } else if (j["type"] == "randomSittingIdle") {
@@ -831,10 +835,8 @@ namespace AnimationSystem {
     return resultVecQuat;
   }
   float *_blendIdle(AnimationMapping &spec, Avatar *avatar) {
-    if (!avatar->randomIdleState) {
-      return evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
-    } else {
-      float *v1 = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration)); // todo: evaluate breath animation.
+    if (avatar->breathState) {
+      float *v1 = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Breath], spec.index, fmod(avatar->timeSinceLastMoveS, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Breath]->duration));
 
       Animation *randomIdleAnimation = animationGroups[animationGroupIndexes.RandomIdle][avatar->randomIdleAnimationIndex];
       float timeS = avatar->randomIdleTime / 1000;
@@ -847,6 +849,9 @@ namespace AnimationSystem {
       f = min(1, f);
       interpolateFlat(v1, 0, v1, 0, v2, 0, f, spec.isPosition);
       return v1;
+    }
+    else {
+      return evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
     }
   }
   void _handleDefault(AnimationMapping &spec, Avatar *avatar) {

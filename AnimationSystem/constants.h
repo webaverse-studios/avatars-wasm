@@ -119,6 +119,7 @@ int singleAnimationIota = 0;
 class SingleAnimationIndexes {
 public:
   int Idle;
+  int Breath;
   int CrouchIdle;
   int SkydiveIdle;
   int GliderIdle;
@@ -406,6 +407,11 @@ AnimationGroupDeclarations declarations = {
         "idle",
         singleAnimationIndexes.Idle = singleAnimationIota++,
         "idle.fbx"
+      },
+      {
+        "breath",
+        singleAnimationIndexes.Breath = singleAnimationIota++,
+        "breath.fbx"
       },
       {
         "crouchIdle",

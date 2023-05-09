@@ -175,6 +175,7 @@ namespace AnimationSystem {
     bool leftHandState;
     bool sprintState;
     bool movementsState;
+    bool breathState;
     bool randomIdleState;
     bool randomSittingIdleState;
 
