@@ -219,7 +219,7 @@ namespace AnimationSystem {
     avatar->actionInterpolants["land"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["dance"] = new BiActionInterpolant(0, 200);
     avatar->actionInterpolants["emote"] = new BiActionInterpolant(0, 200);
-    avatar->actionInterpolants["emoteCompanion"] = new BiActionInterpolant(0, 200);
+    avatar->actionInterpolants["emoteCompanion"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["fallLoop"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["fallLoopTransition"] = new BiActionInterpolant(0, 300);
     avatar->actionInterpolants["hurt"] = new InfiniteActionInterpolant(0);
@@ -470,8 +470,6 @@ namespace AnimationSystem {
     this->danceFactor = this->actionInterpolants["dance"]->get();
 
     this->emoteFactor = this->actionInterpolants["emote"]->get();
-
-    this->emoteCompanionFactor = this->actionInterpolants["emoteCompanion"]->get();
 
     this->fallLoopTime = this->actionInterpolants["fallLoop"]->get();
 
@@ -1020,27 +1018,12 @@ namespace AnimationSystem {
     float t2 = min(emoteCompanionTime / 1000, emoteCompanionAnimation->duration);
     float *v2 = evaluateInterpolant(emoteCompanionAnimation, spec.index, t2);
 
-    // float emoteCompanionFactorS = avatar->emoteCompanionFactor / crouchMaxTime;
-    // float f = min(max(emoteCompanionFactorS, 0), 1);
-
     float f0 = t2 / 0.2;
     float f1 = (emoteCompanionAnimation->duration - t2) / 0.2;
     float f = min(f0, f1);
     f = min(1, f);
 
-    if (spec.index == boneIndexes.Spine || spec.index == boneIndexes.Chest || spec.index == boneIndexes.UpperChest || spec.index == boneIndexes.Neck || spec.index == boneIndexes.Head) {
-      if (!spec.isPosition) {
-        multiplyQuaternionsFlat(spec.dst, 0, v2, 0, spec.dst, 0);
-      } else {
-        interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
-      }
-    } else {
-      if (!spec.isTop) {
-        f *= (1 - avatar->idleWalkFactor);
-      }
-
-      interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
-    }
+    interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
 
     // _clearXZ(spec.dst, spec.isPosition);
   }
@@ -1482,7 +1465,7 @@ namespace AnimationSystem {
         _blendDance(spec, this->avatar);
       } else if (avatar->emoteFactor > 0) {
         _blendEmote(spec, this->avatar);
-      } else if (avatar->emoteCompanionFactor > 0) {
+      } else if (avatar->emoteCompanionState) {
         _blendEmoteCompanion(spec, this->avatar);
       } else if (
         avatar->useAnimationIndex >= 0 ||
