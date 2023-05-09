@@ -291,7 +291,6 @@ int randomIdleAnimationIota = 0;
 class RandomIdleAnimationIndexes {
 public:
   int ArmsUp;
-  int Breath;
   int HeadShake;
   int HeadShift;
   int Listen;
@@ -952,11 +951,6 @@ AnimationGroupDeclarations declarations = {
         "armsUp",
         randomIdleAnimationIndexes.ArmsUp = randomIdleAnimationIota++,
         "arms_up.fbx"
-      },
-      {
-        "breath",
-        randomIdleAnimationIndexes.Breath = randomIdleAnimationIota++,
-        "breath.fbx"
       },
       {
         "headShake",
