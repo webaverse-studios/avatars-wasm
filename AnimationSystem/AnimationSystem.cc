@@ -830,10 +830,12 @@ namespace AnimationSystem {
     }
     return resultVecQuat;
   }
-  void _blendIdle(AnimationMapping &spec, Avatar *avatar) {
-    localVecQuatPtr = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
-    interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr, 0, 1 - avatar->idleWalkFactor, spec.isPosition);
-    if (avatar->randomIdleState) {
+  float *_blendIdle(AnimationMapping &spec, Avatar *avatar) {
+    if (!avatar->randomIdleState) {
+      return evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
+    } else {
+      float *v1 = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration)); // todo: evaluate breath animation.
+
       Animation *randomIdleAnimation = animationGroups[animationGroupIndexes.RandomIdle][avatar->randomIdleAnimationIndex];
       float timeS = avatar->randomIdleTime / 1000;
       float t2 = min(timeS, avatar->randomIdleDuration);
@@ -843,7 +845,8 @@ namespace AnimationSystem {
       float f1 = (avatar->randomIdleDuration - t2) / 0.2;
       float f = min(f0, f1);
       f = min(1, f);
-      interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
+      interpolateFlat(v1, 0, v1, 0, v2, 0, f, spec.isPosition);
+      return v1;
     }
   }
   void _handleDefault(AnimationMapping &spec, Avatar *avatar) {
@@ -867,9 +870,8 @@ namespace AnimationSystem {
     _clearXZ(spec.dst, spec.isPosition);
 
     // blend idle ---
-    // localVecQuatPtr = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
-    // interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr, 0, 1 - avatar->idleWalkFactor, spec.isPosition);
-    _blendIdle(spec, avatar);
+    localVecQuatPtr = _blendIdle(spec, avatar);
+    interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr, 0, 1 - avatar->idleWalkFactor, spec.isPosition);
 
     // crouchAnimations
     localVecQuatPtr2 = doBlendList(spec, animationGroups[animationGroupIndexes.Crouch], directionsWeightsWithReverse, avatar->landTimeS);
