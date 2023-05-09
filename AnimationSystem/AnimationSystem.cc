@@ -471,6 +471,8 @@ namespace AnimationSystem {
 
     this->emoteFactor = this->actionInterpolants["emote"]->get();
 
+    this->emoteCompanionTime = this->actionInterpolants["emoteCompanion"]->get();
+
     this->fallLoopTime = this->actionInterpolants["fallLoop"]->get();
 
     this->fallLoopFactor = this->actionInterpolants["fallLoopTransition"]->getNormalized();
@@ -1014,8 +1016,7 @@ namespace AnimationSystem {
     _handleDefault(spec, avatar);
 
     Animation *emoteCompanionAnimation = animationGroups[animationGroupIndexes.EmoteCompanion][avatar->emoteCompanionAnimationIndex < 0 ? defaultEmoteCompanionAnimationIndex : avatar->emoteCompanionAnimationIndex];
-    float emoteCompanionTime = AnimationMixer::nowS * 1000 - avatar->lastEmoteCompanionTime;
-    float t2 = min(emoteCompanionTime / 1000, emoteCompanionAnimation->duration);
+    float t2 = min(avatar->emoteCompanionTime / 1000, emoteCompanionAnimation->duration);
     float *v2 = evaluateInterpolant(emoteCompanionAnimation, spec.index, t2);
 
     float f0 = t2 / 0.2;

@@ -115,6 +115,7 @@ namespace AnimationSystem {
     float danceFactor;
     float emoteFactor;
     float lastEmoteTime;
+    float emoteCompanionTime;
     float lastEmoteCompanionTime;
     float idleWalkFactor;
     float useTime;
