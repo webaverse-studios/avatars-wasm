@@ -113,7 +113,7 @@ namespace AnimationSystem {
     float jumpTime;
     float narutoRunTime;
     float danceFactor;
-    float emoteFactor;
+    float emoteTime;
     float lastEmoteTime;
     float idleWalkFactor;
     float useTime;

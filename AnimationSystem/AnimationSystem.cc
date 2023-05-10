@@ -217,7 +217,7 @@ namespace AnimationSystem {
     avatar->actionInterpolants["doubleJump"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["land"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["dance"] = new BiActionInterpolant(0, 200);
-    avatar->actionInterpolants["emote"] = new BiActionInterpolant(0, 200);
+    avatar->actionInterpolants["emote"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["fallLoop"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["fallLoopTransition"] = new BiActionInterpolant(0, 300);
     avatar->actionInterpolants["hurt"] = new InfiniteActionInterpolant(0);
@@ -462,7 +462,7 @@ namespace AnimationSystem {
 
     this->danceFactor = this->actionInterpolants["dance"]->get();
 
-    this->emoteFactor = this->actionInterpolants["emote"]->get();
+    this->emoteTime = this->actionInterpolants["emote"]->get();
 
     this->fallLoopTime = this->actionInterpolants["fallLoop"]->get();
 
@@ -874,14 +874,15 @@ namespace AnimationSystem {
 
     copyValue(spec.dst, v2, spec.isPosition);
 
-    if (avatar->emoteFactor > 0) { // note: sitting emote animations ( body animations, not facepose/morphtarget animations ).
+    if (avatar->emoteTime > 0) { // note: sitting emote animations ( body animations, not facepose/morphtarget animations ).
       Animation *emoteAnimation = animationGroups[animationGroupIndexes.EmoteSitting][avatar->emoteAnimationIndex < 0 ? defaultEmoteAnimationIndex : avatar->emoteAnimationIndex];
-      float emoteTime = AnimationMixer::nowS * 1000 - avatar->lastEmoteTime;
-      float t2 = min(emoteTime / 1000, emoteAnimation->duration);
+      float t2 = min(avatar->emoteTime / 1000, emoteAnimation->duration);
       float *v2 = evaluateInterpolant(emoteAnimation, spec.index, t2);
 
-      float emoteFactorS = avatar->emoteFactor / crouchMaxTime;
-      float f = min(max(emoteFactorS, 0), 1);
+      float f0 = t2 / 0.2;
+      float f1 = (emoteAnimation->duration - t2) / 0.2;
+      float f = min(f0, f1);
+      f = min(1, f);
 
       interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
     } else if (avatar->randomSittingIdleState) { // note: random sitting idle animations.
@@ -936,12 +937,13 @@ namespace AnimationSystem {
     _handleDefault(spec, avatar);
 
     Animation *emoteAnimation = animationGroups[animationGroupIndexes.Emote][avatar->emoteAnimationIndex < 0 ? defaultEmoteAnimationIndex : avatar->emoteAnimationIndex];
-    float emoteTime = AnimationMixer::nowS * 1000 - avatar->lastEmoteTime;
-    float t2 = min(emoteTime / 1000, emoteAnimation->duration);
+    float t2 = min(avatar->emoteTime / 1000, emoteAnimation->duration);
     float *v2 = evaluateInterpolant(emoteAnimation, spec.index, t2);
 
-    float emoteFactorS = avatar->emoteFactor / crouchMaxTime;
-    float f = min(max(emoteFactorS, 0), 1);
+    float f0 = t2 / 0.2;
+    float f1 = (emoteAnimation->duration - t2) / 0.2;
+    float f = min(f0, f1);
+    f = min(1, f);
 
     if (spec.index == boneIndexes.Spine || spec.index == boneIndexes.Chest || spec.index == boneIndexes.UpperChest || spec.index == boneIndexes.Neck || spec.index == boneIndexes.Head) {
       if (!spec.isPosition) {
@@ -1395,7 +1397,7 @@ namespace AnimationSystem {
         _blendNarutoRun(spec, this->avatar);
       } else if (avatar->danceFactor > 0) {
         _blendDance(spec, this->avatar);
-      } else if (avatar->emoteFactor > 0) {
+      } else if (avatar->emoteTime > 0) {
         _blendEmote(spec, this->avatar);
       } else if (
         avatar->useAnimationIndex >= 0 ||
