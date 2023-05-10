@@ -98,7 +98,6 @@ public:
   int Aim;
   int Dance;
   int Emote;
-  int EmoteCompanion;
   int EmoteSitting;
   int RandomSittingIdle;
   int Hold;
@@ -241,28 +240,20 @@ public:
   int SurpriseSoft;
   int Victory;
   int VictorySoft;
-};
-EmoteAnimationIndexes emoteAnimationIndexes;
-
-int emoteCompanionAnimationIota = 0;
-class EmoteCompanionAnimationIndexes {
-public:
-  int Alert;
+  
   int Agree;
-  int Angry;
+  int Angry_2;
   int Apologetic;
   int Confused;
   int Cry;
   int Disagree;
-  int Embarrassed;
+  int Embarrassed_2;
   int Excited;
   int Explain;
   int Keyboard;
-  int Sad;
-  int Surprise;
-  int Victory;
+  int Sad_2;
 };
-EmoteCompanionAnimationIndexes emoteCompanionAnimationIndexes;
+EmoteAnimationIndexes emoteAnimationIndexes;
 
 int emoteSittingAnimationIota = 0;
 class EmoteSittingAnimationIndexes {
@@ -766,81 +757,61 @@ AnimationGroupDeclarations declarations = {
         emoteAnimationIndexes.VictorySoft = emoteAnimationIota++,
         "victory_soft.fbx"
       },
-    }
-  },
-  {
-    "emoteCompanion",
-    animationGroupIndexes.EmoteCompanion = animationGroupIota++,
-    {
-      {
-        "alert",
-        emoteCompanionAnimationIndexes.Alert = emoteCompanionAnimationIota++,
-        "alert.fbx"
-      },
+
       {
         "agree",
-        emoteCompanionAnimationIndexes.Agree = emoteCompanionAnimationIota++,
+        emoteAnimationIndexes.Agree = emoteAnimationIota++,
         "agree.fbx"
       },
       {
-        "angry",
-        emoteCompanionAnimationIndexes.Angry = emoteCompanionAnimationIota++,
+        "angry_2",
+        emoteAnimationIndexes.Angry_2 = emoteAnimationIota++,
         "angry_fists.fbx"
       },
       {
         "apologetic",
-        emoteCompanionAnimationIndexes.Apologetic = emoteCompanionAnimationIota++,
+        emoteAnimationIndexes.Apologetic = emoteAnimationIota++,
         "apologetic.fbx"
       },
       {
         "confused",
-        emoteCompanionAnimationIndexes.Confused = emoteCompanionAnimationIota++,
+        emoteAnimationIndexes.Confused = emoteAnimationIota++,
         "confused.fbx"
       },
       {
         "cry",
-        emoteCompanionAnimationIndexes.Cry = emoteCompanionAnimationIota++,
+        emoteAnimationIndexes.Cry = emoteAnimationIota++,
         "cry.fbx"
       },
       {
         "disagree",
-        emoteCompanionAnimationIndexes.Disagree = emoteCompanionAnimationIota++,
+        emoteAnimationIndexes.Disagree = emoteAnimationIota++,
         "disagree.fbx"
       },
       {
-        "embarrassed",
-        emoteCompanionAnimationIndexes.Embarrassed = emoteCompanionAnimationIota++,
+        "embarrassed_2",
+        emoteAnimationIndexes.Embarrassed_2 = emoteAnimationIota++,
         "embarrassed_2.fbx"
       },
       {
         "excited",
-        emoteCompanionAnimationIndexes.Excited = emoteCompanionAnimationIota++,
+        emoteAnimationIndexes.Excited = emoteAnimationIota++,
         "excited.fbx"
       },
       {
         "explain",
-        emoteCompanionAnimationIndexes.Explain = emoteCompanionAnimationIota++,
+        emoteAnimationIndexes.Explain = emoteAnimationIota++,
         "explain.fbx"
       },
       {
         "keyboard",
-        emoteCompanionAnimationIndexes.Keyboard = emoteCompanionAnimationIota++,
+        emoteAnimationIndexes.Keyboard = emoteAnimationIota++,
         "keyboard.fbx"
       },
       {
-        "sad",
-        emoteCompanionAnimationIndexes.Sad = emoteCompanionAnimationIota++,
+        "sad_2",
+        emoteAnimationIndexes.Sad_2 = emoteAnimationIota++,
         "sad_2.fbx"
-      },
-      {
-        "surprise",
-        emoteCompanionAnimationIndexes.Surprise = emoteCompanionAnimationIota++,
-        "surprise.fbx"
-      },
-      {
-        "victory",
-        emoteCompanionAnimationIndexes.Victory = emoteCompanionAnimationIota++,
-        "victory.fbx"
       },
     }
   },
