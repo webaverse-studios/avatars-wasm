@@ -874,7 +874,7 @@ namespace AnimationSystem {
 
     copyValue(spec.dst, v2, spec.isPosition);
 
-    if (avatar->emoteTime > 0) { // note: sitting emote animations ( body animations, not facepose/morphtarget animations ).
+    if (avatar->emoteState) { // note: sitting emote animations ( body animations, not facepose/morphtarget animations ).
       Animation *emoteAnimation = animationGroups[animationGroupIndexes.EmoteSitting][avatar->emoteAnimationIndex < 0 ? defaultEmoteAnimationIndex : avatar->emoteAnimationIndex];
       float t2 = min(avatar->emoteTime / 1000, emoteAnimation->duration);
       float *v2 = evaluateInterpolant(emoteAnimation, spec.index, t2);
@@ -1397,7 +1397,7 @@ namespace AnimationSystem {
         _blendNarutoRun(spec, this->avatar);
       } else if (avatar->danceFactor > 0) {
         _blendDance(spec, this->avatar);
-      } else if (avatar->emoteTime > 0) {
+      } else if (avatar->emoteState) {
         _blendEmote(spec, this->avatar);
       } else if (
         avatar->useAnimationIndex >= 0 ||
