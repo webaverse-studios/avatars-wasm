@@ -99,6 +99,7 @@ public:
   int Dance;
   int Emote;
   int EmoteSitting;
+  int RandomIdle;
   int RandomSittingIdle;
   int Hold;
   int Hurt;
@@ -276,6 +277,16 @@ public:
   int VictorySoft;
 };
 EmoteSittingAnimationIndexes emoteSittingAnimationIndexes;
+
+int randomIdleAnimationIota = 0;
+class RandomIdleAnimationIndexes {
+public:
+  int ArmsUp;
+  int HeadShake;
+  int HeadShift;
+  int Listen;
+};
+RandomIdleAnimationIndexes randomIdleAnimationIndexes;
 
 int randomSittingIdleAnimationIota = 0;
 class RandomSittingIdleAnimationIndexes {
@@ -898,6 +909,32 @@ AnimationGroupDeclarations declarations = {
         "victorySoft",
         emoteSittingAnimationIndexes.VictorySoft = emoteSittingAnimationIota++,
         "victory_soft.fbx"
+      },
+    }
+  },
+  {
+    "randomIdle",
+    animationGroupIndexes.RandomIdle = animationGroupIota++,
+    {
+      {
+        "armsUp",
+        randomIdleAnimationIndexes.ArmsUp = randomIdleAnimationIota++,
+        "arms_up.fbx"
+      },
+      {
+        "headShake",
+        randomIdleAnimationIndexes.HeadShake = randomIdleAnimationIota++,
+        "head_shake_2.fbx"
+      },
+      {
+        "headShift",
+        randomIdleAnimationIndexes.HeadShift = randomIdleAnimationIota++,
+        "head_shift.fbx"
+      },
+      {
+        "listen",
+        randomIdleAnimationIndexes.Listen = randomIdleAnimationIota++,
+        "listen.fbx"
       },
     }
   },
