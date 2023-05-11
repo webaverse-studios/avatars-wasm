@@ -401,6 +401,8 @@ namespace AnimationSystem {
     this->movementsTransitionFactor = scratchStack[index++];
     this->movementsTime = scratchStack[index++];
 
+    this->idleBias = scratchStack[index++];
+
     this->landWithMoving = scratchStack[index++];
     this->lastEmoteTime = scratchStack[index++];
     this->useAnimationEnvelopeLength = scratchStack[index++];
@@ -816,8 +818,8 @@ namespace AnimationSystem {
   }
 
   float *_blendIdle(AnimationMapping &spec, Avatar *avatar) {
-    float *v1 = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
-
+    float *v1 = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS + avatar->idleBias * animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
+   
     Animation *randomIdleAnimation = animationGroups[animationGroupIndexes.RandomIdle][avatar->randomIdleAnimationIndex];
     float timeS = avatar->randomIdleTime / 1000;
     float t2 = min(timeS, avatar->randomIdleDuration);
