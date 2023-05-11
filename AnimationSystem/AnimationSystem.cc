@@ -227,6 +227,7 @@ namespace AnimationSystem {
     avatar->actionInterpolants["sprint"] = new BiActionInterpolant(0, 200);
     avatar->actionInterpolants["movements"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["movementsTransition"] = new BiActionInterpolant(0, 200);
+    avatar->actionInterpolants["randomIdle"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["randomSittingIdle"] = new InfiniteActionInterpolant(0);
 
     return avatar;
@@ -379,6 +380,7 @@ namespace AnimationSystem {
     this->actionInterpolants["sprint"]->update(timeDiff, this->sprintState);
     this->actionInterpolants["movements"]->update(timeDiff, this->movementsState);
     this->actionInterpolants["movementsTransition"]->update(timeDiff, this->movementsState);
+    this->actionInterpolants["randomIdle"]->update(timeDiff, this->randomIdleState);
     this->actionInterpolants["randomSittingIdle"]->update(timeDiff, this->randomSittingIdleState);
   }
   void Avatar::update(float *scratchStack) {
@@ -398,6 +400,8 @@ namespace AnimationSystem {
     this->walkRunFactor = scratchStack[index++];
     this->movementsTransitionFactor = scratchStack[index++];
     this->movementsTime = scratchStack[index++];
+
+    this->idleBias = scratchStack[index++];
 
     this->landWithMoving = scratchStack[index++];
     this->lastEmoteTime = scratchStack[index++];
@@ -479,6 +483,8 @@ namespace AnimationSystem {
 
     float movementsTransitionTime = this->actionInterpolants["movementsTransition"]->get();
     this->movementsTransitionFactor = fmin(fmax(movementsTransitionTime / 200, 0), 1);
+
+    this->randomIdleTime = this->actionInterpolants["randomIdle"]->get();
 
     this->randomSittingIdleTime = this->actionInterpolants["randomSittingIdle"]->get();
 
@@ -583,6 +589,11 @@ namespace AnimationSystem {
       this->sprintState = true;
     } else if (j["type"] == "movements") {
       this->movementsState = true;
+    } else if (j["type"] == "randomIdle") {
+      this->randomIdleState = true;
+      this->randomIdleDuration = j["duration"];
+      this->randomIdleSpeed = j["speed"];
+      this->randomIdleAnimationIndex = animationGroupsMap["randomIdle"][this->actions["randomIdle"]["animation"]].index;
     } else if (j["type"] == "randomSittingIdle") {
       this->randomSittingIdleState = true;
       this->randomSittingIdleDuration = j["duration"];
@@ -649,6 +660,8 @@ namespace AnimationSystem {
       this->sprintState = false;
     } else if (j["type"] == "movements") {
       this->movementsState = false;
+    } else if (j["type"] == "randomIdle") {
+      this->randomIdleState = false;
     } else if (j["type"] == "randomSittingIdle") {
       this->randomSittingIdleState = false;
     }
@@ -804,6 +817,22 @@ namespace AnimationSystem {
     return resultVecQuat;
   }
 
+  float *_blendIdle(AnimationMapping &spec, Avatar *avatar) {
+    float *v1 = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS + avatar->idleBias * animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
+
+    Animation *randomIdleAnimation = animationGroups[animationGroupIndexes.RandomIdle][avatar->randomIdleAnimationIndex];
+    float timeS = avatar->randomIdleTime / 1000;
+    float t2 = min(timeS, avatar->randomIdleDuration);
+    float *v2 = evaluateInterpolant(randomIdleAnimation, spec.index, t2 * avatar->randomIdleSpeed);
+
+    float f0 = t2 / 0.2;
+    float f1 = (avatar->randomIdleDuration - t2) / 0.2;
+    float f = min(f0, f1);
+    f = min(1, f);
+    interpolateFlat(v1, 0, v1, 0, v2, 0, f, spec.isPosition);
+    return v1;
+  }
+
   void _handleDefault(AnimationMapping &spec, Avatar *avatar) {
     // note: Big performance influnce!!! Do not update `directionsWeightsWithReverse` here, because of will run 53 times ( 53 bones )!!! todo: Notice codes which will run 53 times!!!
     // directionsWeightsWithReverse["forward"] = avatar->forwardFactor;
@@ -825,7 +854,7 @@ namespace AnimationSystem {
     _clearXZ(spec.dst, spec.isPosition);
 
     // blend idle ---
-    localVecQuatPtr = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
+    localVecQuatPtr = _blendIdle(spec, avatar);
     interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr, 0, 1 - avatar->idleWalkFactor, spec.isPosition);
 
     // crouchAnimations
