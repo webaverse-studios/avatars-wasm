@@ -99,6 +99,7 @@ public:
   int Dance;
   int Emote;
   int EmoteSitting;
+  int RandomIdle;
   int RandomSittingIdle;
   int Hold;
   int Hurt;
@@ -240,6 +241,20 @@ public:
   int SurpriseSoft;
   int Victory;
   int VictorySoft;
+
+  int Agree;
+  int Angry_2;
+  int Apologetic;
+  int Confused;
+  int Cry;
+  int Disagree;
+  int Embarrassed_2;
+  int Excited;
+  int Explain;
+  int HeadShake_2;
+  int Keyboard;
+  int Listen;
+  int Sad_2;
 };
 EmoteAnimationIndexes emoteAnimationIndexes;
 
@@ -264,6 +279,14 @@ public:
   int VictorySoft;
 };
 EmoteSittingAnimationIndexes emoteSittingAnimationIndexes;
+
+int randomIdleAnimationIota = 0;
+class RandomIdleAnimationIndexes {
+public:
+  int ArmsUp;
+  int HeadShift;
+};
+RandomIdleAnimationIndexes randomIdleAnimationIndexes;
 
 int randomSittingIdleAnimationIota = 0;
 class RandomSittingIdleAnimationIndexes {
@@ -745,6 +768,72 @@ AnimationGroupDeclarations declarations = {
         emoteAnimationIndexes.VictorySoft = emoteAnimationIota++,
         "victory_soft.fbx"
       },
+
+      {
+        "agree",
+        emoteAnimationIndexes.Agree = emoteAnimationIota++,
+        "agree.fbx"
+      },
+      {
+        "angry_2",
+        emoteAnimationIndexes.Angry_2 = emoteAnimationIota++,
+        "angry_fists.fbx"
+      },
+      {
+        "apologetic",
+        emoteAnimationIndexes.Apologetic = emoteAnimationIota++,
+        "apologetic.fbx"
+      },
+      {
+        "confused",
+        emoteAnimationIndexes.Confused = emoteAnimationIota++,
+        "confused.fbx"
+      },
+      {
+        "cry",
+        emoteAnimationIndexes.Cry = emoteAnimationIota++,
+        "cry.fbx"
+      },
+      {
+        "disagree",
+        emoteAnimationIndexes.Disagree = emoteAnimationIota++,
+        "disagree.fbx"
+      },
+      {
+        "embarrassed_2",
+        emoteAnimationIndexes.Embarrassed_2 = emoteAnimationIota++,
+        "embarrassed_2.fbx"
+      },
+      {
+        "excited",
+        emoteAnimationIndexes.Excited = emoteAnimationIota++,
+        "excited.fbx"
+      },
+      {
+        "explain",
+        emoteAnimationIndexes.Explain = emoteAnimationIota++,
+        "explain.fbx"
+      },
+      {
+        "headShake_2",
+        emoteAnimationIndexes.HeadShake_2 = emoteAnimationIota++,
+        "head_shake_2.fbx"
+      },
+      {
+        "keyboard",
+        emoteAnimationIndexes.Keyboard = emoteAnimationIota++,
+        "keyboard.fbx"
+      },
+      {
+        "listen",
+        emoteAnimationIndexes.Listen = emoteAnimationIota++,
+        "listen.fbx"
+      },
+      {
+        "sad_2",
+        emoteAnimationIndexes.Sad_2 = emoteAnimationIota++,
+        "sad_2.fbx"
+      },
     }
   },
   {
@@ -830,6 +919,22 @@ AnimationGroupDeclarations declarations = {
         "victorySoft",
         emoteSittingAnimationIndexes.VictorySoft = emoteSittingAnimationIota++,
         "victory_soft.fbx"
+      },
+    }
+  },
+  {
+    "randomIdle",
+    animationGroupIndexes.RandomIdle = animationGroupIota++,
+    {
+      {
+        "armsUp",
+        randomIdleAnimationIndexes.ArmsUp = randomIdleAnimationIota++,
+        "arms_up.fbx"
+      },
+      {
+        "headShift",
+        randomIdleAnimationIndexes.HeadShift = randomIdleAnimationIota++,
+        "head_shift.fbx"
       },
     }
   },
