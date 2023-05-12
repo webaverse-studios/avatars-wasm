@@ -284,7 +284,14 @@ int randomIdleAnimationIota = 0;
 class RandomIdleAnimationIndexes {
 public:
   int ArmsUp;
+  int Confused;
+  int HeadBob;
+  // int HeadBobSide;
   int HeadShift;
+  int LookAround;
+  int LookAroundUp;
+  int NeckShift;
+  int Wiggle;
 };
 RandomIdleAnimationIndexes randomIdleAnimationIndexes;
 
@@ -932,9 +939,44 @@ AnimationGroupDeclarations declarations = {
         "arms_up.fbx"
       },
       {
+        "confused",
+        randomIdleAnimationIndexes.Confused = randomIdleAnimationIota++,
+        "confused_soft.fbx"
+      },
+      {
+        "headBob",
+        randomIdleAnimationIndexes.HeadBob = randomIdleAnimationIota++,
+        "head_bob.fbx"
+      },
+      // {
+      //   "headBobSide",
+      //   randomIdleAnimationIndexes.HeadBobSide = randomIdleAnimationIota++,
+      //   "head_bob_side.fbx"
+      // },
+      {
         "headShift",
         randomIdleAnimationIndexes.HeadShift = randomIdleAnimationIota++,
         "head_shift.fbx"
+      },
+      {
+        "lookAround",
+        randomIdleAnimationIndexes.LookAround = randomIdleAnimationIota++,
+        "look_around.fbx"
+      },
+      {
+        "lookAroundUp",
+        randomIdleAnimationIndexes.LookAroundUp = randomIdleAnimationIota++,
+        "look_around_up.fbx"
+      },
+      {
+        "neckShift",
+        randomIdleAnimationIndexes.NeckShift = randomIdleAnimationIota++,
+        "neck_shift.fbx"
+      },
+      {
+        "wiggle",
+        randomIdleAnimationIndexes.Wiggle = randomIdleAnimationIota++,
+        "wiggle.fbx"
       },
     }
   },
