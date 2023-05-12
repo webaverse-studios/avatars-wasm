@@ -251,7 +251,9 @@ public:
   int Embarrassed_2;
   int Excited;
   int Explain;
+  int HeadShake_2;
   int Keyboard;
+  int Listen;
   int Sad_2;
 };
 EmoteAnimationIndexes emoteAnimationIndexes;
@@ -282,9 +284,7 @@ int randomIdleAnimationIota = 0;
 class RandomIdleAnimationIndexes {
 public:
   int ArmsUp;
-  int HeadShake;
   int HeadShift;
-  int Listen;
 };
 RandomIdleAnimationIndexes randomIdleAnimationIndexes;
 
@@ -815,9 +815,19 @@ AnimationGroupDeclarations declarations = {
         "explain.fbx"
       },
       {
+        "headShake_2",
+        emoteAnimationIndexes.HeadShake_2 = emoteAnimationIota++,
+        "head_shake_2.fbx"
+      },
+      {
         "keyboard",
         emoteAnimationIndexes.Keyboard = emoteAnimationIota++,
         "keyboard.fbx"
+      },
+      {
+        "listen",
+        emoteAnimationIndexes.Listen = emoteAnimationIota++,
+        "listen.fbx"
       },
       {
         "sad_2",
@@ -922,19 +932,9 @@ AnimationGroupDeclarations declarations = {
         "arms_up.fbx"
       },
       {
-        "headShake",
-        randomIdleAnimationIndexes.HeadShake = randomIdleAnimationIota++,
-        "head_shake_2.fbx"
-      },
-      {
         "headShift",
         randomIdleAnimationIndexes.HeadShift = randomIdleAnimationIota++,
         "head_shift.fbx"
-      },
-      {
-        "listen",
-        randomIdleAnimationIndexes.Listen = randomIdleAnimationIota++,
-        "listen.fbx"
       },
     }
   },
