@@ -285,7 +285,7 @@ class RandomIdleAnimationIndexes {
 public:
   int ArmsUp;
   int Confused;
-  int HeadBob;
+  // int HeadBob;
   // int HeadBobSide;
   int HeadShift;
   int LookAround;
@@ -943,11 +943,11 @@ AnimationGroupDeclarations declarations = {
         randomIdleAnimationIndexes.Confused = randomIdleAnimationIota++,
         "confused_soft.fbx"
       },
-      {
-        "headBob",
-        randomIdleAnimationIndexes.HeadBob = randomIdleAnimationIota++,
-        "head_bob.fbx"
-      },
+      // {
+      //   "headBob",
+      //   randomIdleAnimationIndexes.HeadBob = randomIdleAnimationIota++,
+      //   "head_bob.fbx"
+      // },
       // {
       //   "headBobSide",
       //   randomIdleAnimationIndexes.HeadBobSide = randomIdleAnimationIota++,
