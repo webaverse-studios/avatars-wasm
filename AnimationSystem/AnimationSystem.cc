@@ -855,7 +855,7 @@ namespace AnimationSystem {
 
     // blend walk run
     interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr2, 0, avatar->walkRunFactor, spec.isPosition);
-    _clearXZ(spec.dst, spec.isPosition);
+    // _clearXZ(spec.dst, spec.isPosition);
 
     // blend idle ---
     localVecQuatPtr = _blendIdle(spec, avatar);
