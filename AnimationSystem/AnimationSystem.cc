@@ -818,19 +818,23 @@ namespace AnimationSystem {
   }
 
   float *_blendIdle(AnimationMapping &spec, Avatar *avatar) {
-    float *v1 = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS + avatar->idleBias * animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
-   
-    Animation *randomIdleAnimation = animationGroups[animationGroupIndexes.RandomIdle][avatar->randomIdleAnimationIndex];
-    float timeS = avatar->randomIdleTime / 1000;
-    float t2 = min(timeS, avatar->randomIdleDuration);
-    float *v2 = evaluateInterpolant(randomIdleAnimation, spec.index, t2 * avatar->randomIdleSpeed);
-
-    float f0 = t2 / 0.2;
-    float f1 = (avatar->randomIdleDuration - t2) / 0.2;
-    float f = min(f0, f1);
-    f = min(1, f);
-    interpolateFlat(v1, 0, v1, 0, v2, 0, f, spec.isPosition);
+    Animation * testAnimation = animationGroups[animationGroupIndexes.RandomIdle][randomIdleAnimationIndexes.Wiggle];
+    float *v1 = evaluateInterpolant(testAnimation, spec.index, fmod(avatar->timeSinceLastMoveS + avatar->idleBias * testAnimation->duration, testAnimation->duration));
     return v1;
+
+    // float *v1 = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS + avatar->idleBias * animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
+   
+    // Animation *randomIdleAnimation = animationGroups[animationGroupIndexes.RandomIdle][avatar->randomIdleAnimationIndex];
+    // float timeS = avatar->randomIdleTime / 1000;
+    // float t2 = min(timeS, avatar->randomIdleDuration);
+    // float *v2 = evaluateInterpolant(randomIdleAnimation, spec.index, t2 * avatar->randomIdleSpeed);
+
+    // float f0 = t2 / 0.2;
+    // float f1 = (avatar->randomIdleDuration - t2) / 0.2;
+    // float f = min(f0, f1);
+    // f = min(1, f);
+    // interpolateFlat(v1, 0, v1, 0, v2, 0, f, spec.isPosition);
+    // return v1;
   }
 
   void _handleDefault(AnimationMapping &spec, Avatar *avatar) {
