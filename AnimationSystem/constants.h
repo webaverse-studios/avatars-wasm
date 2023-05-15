@@ -285,6 +285,8 @@ class RandomIdleAnimationIndexes {
 public:
   int ArmsUp;
   int Confused;
+  int BreathSoft;
+  int BreathStrong;
   // int HeadBob;
   // int HeadBobSide;
   int HeadShift;
@@ -937,6 +939,16 @@ AnimationGroupDeclarations declarations = {
         "armsUp",
         randomIdleAnimationIndexes.ArmsUp = randomIdleAnimationIota++,
         "arms_up.fbx"
+      },
+      {
+        "breathSoft",
+        randomIdleAnimationIndexes.BreathSoft = randomIdleAnimationIota++,
+        "breath_soft.fbx"
+      },
+      {
+        "breathStrong",
+        randomIdleAnimationIndexes.BreathStrong = randomIdleAnimationIota++,
+        "breath_strong.fbx"
       },
       {
         "confused",
