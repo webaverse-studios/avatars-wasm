@@ -821,7 +821,7 @@ namespace AnimationSystem {
   float *_blendIdle(AnimationMapping &spec, Avatar *avatar) {
     float *v1 = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS + avatar->idleBias * animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
    
-    if (spec.isTop) {
+    if (spec.isTop && avatar->randomIdleState) {
       Animation *randomIdleAnimation = animationGroups[animationGroupIndexes.RandomIdle][avatar->randomIdleAnimationIndex];
       float timeS = avatar->randomIdleTime / 1000;
       float t2 = min(timeS, avatar->randomIdleDuration);
