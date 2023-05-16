@@ -593,6 +593,7 @@ namespace AnimationSystem {
       this->randomIdleState = true;
       this->randomIdleDuration = j["duration"];
       this->randomIdleSpeed = j["speed"];
+      this->randomIdleTransition = j["transition"];
       this->randomIdleAnimationIndex = animationGroupsMap["randomIdle"][this->actions["randomIdle"]["animation"]].index;
     } else if (j["type"] == "randomSittingIdle") {
       this->randomSittingIdleState = true;
@@ -820,16 +821,19 @@ namespace AnimationSystem {
   float *_blendIdle(AnimationMapping &spec, Avatar *avatar) {
     float *v1 = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS + avatar->idleBias * animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
    
-    Animation *randomIdleAnimation = animationGroups[animationGroupIndexes.RandomIdle][avatar->randomIdleAnimationIndex];
-    float timeS = avatar->randomIdleTime / 1000;
-    float t2 = min(timeS, avatar->randomIdleDuration);
-    float *v2 = evaluateInterpolant(randomIdleAnimation, spec.index, t2 * avatar->randomIdleSpeed);
+    if (spec.isTop && avatar->randomIdleState) {
+      Animation *randomIdleAnimation = animationGroups[animationGroupIndexes.RandomIdle][avatar->randomIdleAnimationIndex];
+      float timeS = avatar->randomIdleTime / 1000;
+      float t2 = min(timeS, avatar->randomIdleDuration);
+      float *v2 = evaluateInterpolant(randomIdleAnimation, spec.index, t2 * avatar->randomIdleSpeed);
 
-    float f0 = t2 / 0.2;
-    float f1 = (avatar->randomIdleDuration - t2) / 0.2;
-    float f = min(f0, f1);
-    f = min(1, f);
-    interpolateFlat(v1, 0, v1, 0, v2, 0, f, spec.isPosition);
+      float f0 = t2 / avatar->randomIdleTransition;
+      float f1 = (avatar->randomIdleDuration - t2) / avatar->randomIdleTransition;
+      float f = min(f0, f1);
+      f = min(1, f);
+      interpolateFlat(v1, 0, v1, 0, v2, 0, f, spec.isPosition);
+    }
+    
     return v1;
   }
 

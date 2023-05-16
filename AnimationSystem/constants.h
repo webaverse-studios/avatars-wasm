@@ -243,18 +243,23 @@ public:
   int VictorySoft;
 
   int Agree;
-  int Angry_2;
+  int AngryFists;
+  int AngryFistsSoft;
   int Apologetic;
   int Confused;
+  int Curious;
   int Cry;
   int Disagree;
-  int Embarrassed_2;
+  int Embarrassed2;
   int Excited;
   int Explain;
-  int HeadShake_2;
+  int HeadShake2;
   int Keyboard;
+  int KeyboardSoft;
   int Listen;
-  int Sad_2;
+  int Shocked;
+  int Tantrum;
+  int Upset;
 };
 EmoteAnimationIndexes emoteAnimationIndexes;
 
@@ -284,7 +289,14 @@ int randomIdleAnimationIota = 0;
 class RandomIdleAnimationIndexes {
 public:
   int ArmsUp;
+  int Confused;
+  int BreathSoft;
+  int BreathStrong;
   int HeadShift;
+  int LookAround;
+  int LookAroundUp;
+  int NeckShift;
+  int Wiggle;
 };
 RandomIdleAnimationIndexes randomIdleAnimationIndexes;
 
@@ -775,9 +787,14 @@ AnimationGroupDeclarations declarations = {
         "agree.fbx"
       },
       {
-        "angry_2",
-        emoteAnimationIndexes.Angry_2 = emoteAnimationIota++,
+        "angryFists",
+        emoteAnimationIndexes.AngryFists = emoteAnimationIota++,
         "angry_fists.fbx"
+      },
+      {
+        "angryFistsSoft",
+        emoteAnimationIndexes.AngryFistsSoft = emoteAnimationIota++,
+        "angry_fists_soft.fbx"
       },
       {
         "apologetic",
@@ -790,6 +807,11 @@ AnimationGroupDeclarations declarations = {
         "confused.fbx"
       },
       {
+        "curious",
+        emoteAnimationIndexes.Curious = emoteAnimationIota++,
+        "curious.fbx"
+      },
+      {
         "cry",
         emoteAnimationIndexes.Cry = emoteAnimationIota++,
         "cry.fbx"
@@ -800,8 +822,8 @@ AnimationGroupDeclarations declarations = {
         "disagree.fbx"
       },
       {
-        "embarrassed_2",
-        emoteAnimationIndexes.Embarrassed_2 = emoteAnimationIota++,
+        "embarrassed2",
+        emoteAnimationIndexes.Embarrassed2 = emoteAnimationIota++,
         "embarrassed_2.fbx"
       },
       {
@@ -815,8 +837,8 @@ AnimationGroupDeclarations declarations = {
         "explain.fbx"
       },
       {
-        "headShake_2",
-        emoteAnimationIndexes.HeadShake_2 = emoteAnimationIota++,
+        "headShake2",
+        emoteAnimationIndexes.HeadShake2 = emoteAnimationIota++,
         "head_shake_2.fbx"
       },
       {
@@ -825,14 +847,29 @@ AnimationGroupDeclarations declarations = {
         "keyboard.fbx"
       },
       {
+        "keyboardSoft",
+        emoteAnimationIndexes.KeyboardSoft = emoteAnimationIota++,
+        "keyboard_soft.fbx"
+      },
+      {
         "listen",
         emoteAnimationIndexes.Listen = emoteAnimationIota++,
         "listen.fbx"
       },
       {
-        "sad_2",
-        emoteAnimationIndexes.Sad_2 = emoteAnimationIota++,
-        "sad_2.fbx"
+        "shocked",
+        emoteAnimationIndexes.Shocked = emoteAnimationIota++,
+        "shocked.fbx"
+      },
+      {
+        "tantrum",
+        emoteAnimationIndexes.Tantrum = emoteAnimationIota++,
+        "tantrum_head.fbx"
+      },
+      {
+        "upset",
+        emoteAnimationIndexes.Upset = emoteAnimationIota++,
+        "upset.fbx"
       },
     }
   },
@@ -932,9 +969,44 @@ AnimationGroupDeclarations declarations = {
         "arms_up.fbx"
       },
       {
+        "breathSoft",
+        randomIdleAnimationIndexes.BreathSoft = randomIdleAnimationIota++,
+        "breath_soft.fbx"
+      },
+      {
+        "breathStrong",
+        randomIdleAnimationIndexes.BreathStrong = randomIdleAnimationIota++,
+        "breath_strong.fbx"
+      },
+      {
+        "confused",
+        randomIdleAnimationIndexes.Confused = randomIdleAnimationIota++,
+        "confused_soft.fbx"
+      },
+      {
         "headShift",
         randomIdleAnimationIndexes.HeadShift = randomIdleAnimationIota++,
         "head_shift.fbx"
+      },
+      {
+        "lookAround",
+        randomIdleAnimationIndexes.LookAround = randomIdleAnimationIota++,
+        "look_around.fbx"
+      },
+      {
+        "lookAroundUp",
+        randomIdleAnimationIndexes.LookAroundUp = randomIdleAnimationIota++,
+        "look_around_up.fbx"
+      },
+      {
+        "neckShift",
+        randomIdleAnimationIndexes.NeckShift = randomIdleAnimationIota++,
+        "neck_shift.fbx"
+      },
+      {
+        "wiggle",
+        randomIdleAnimationIndexes.Wiggle = randomIdleAnimationIota++,
+        "wiggle.fbx"
       },
     }
   },
