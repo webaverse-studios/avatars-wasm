@@ -144,7 +144,8 @@ namespace AnimationSystem {
     float randomIdleTime;
     float randomIdleDuration;
     float randomIdleSpeed;
-    float randomIdleTransition;
+    // float randomIdleTransition;
+    float randomIdleTransitionFactor;
     float randomSittingIdleTime;
     float randomSittingIdleDuration;
     float randomSittingIdleSpeed;
