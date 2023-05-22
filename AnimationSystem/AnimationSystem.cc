@@ -596,7 +596,7 @@ namespace AnimationSystem {
       this->randomIdleState = true;
       this->randomIdleDuration = j["duration"];
       this->randomIdleSpeed = j["speed"];
-      this->randomIdleStartTime = j["startTime"];
+      this->randomIdleStartTimeS = j["startTimeS"];
       this->randomIdleAnimationIndex = animationGroupsMap["randomIdle"][this->actions["randomIdle"]["animation"]].index;
     } else if (j["type"] == "randomSittingIdle") {
       this->randomSittingIdleState = true;
@@ -826,7 +826,7 @@ namespace AnimationSystem {
    
     if (spec.isTop && avatar->randomIdleTransitionFactor > 0) {
       Animation *randomIdleAnimation = animationGroups[animationGroupIndexes.RandomIdle][avatar->randomIdleAnimationIndex];
-      float timeS = AnimationMixer::nowS - avatar->randomIdleStartTime;
+      float timeS = AnimationMixer::nowS - avatar->randomIdleStartTimeS;
       float t2 = min(timeS, avatar->randomIdleDuration);
       float *v2 = evaluateInterpolant(randomIdleAnimation, spec.index, t2 * avatar->randomIdleSpeed);
       interpolateFlat(v1, 0, v1, 0, v2, 0, avatar->randomIdleTransitionFactor, spec.isPosition);
