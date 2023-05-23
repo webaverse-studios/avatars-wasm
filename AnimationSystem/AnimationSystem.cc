@@ -228,6 +228,7 @@ namespace AnimationSystem {
     avatar->actionInterpolants["movements"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["movementsTransition"] = new BiActionInterpolant(0, 200);
     avatar->actionInterpolants["randomIdle"] = new InfiniteActionInterpolant(0);
+    avatar->actionInterpolants["randomIdleTransition"] = new BiActionInterpolant(0, 200);
     avatar->actionInterpolants["randomSittingIdle"] = new InfiniteActionInterpolant(0);
 
     return avatar;
@@ -381,6 +382,7 @@ namespace AnimationSystem {
     this->actionInterpolants["movements"]->update(timeDiff, this->movementsState);
     this->actionInterpolants["movementsTransition"]->update(timeDiff, this->movementsState);
     this->actionInterpolants["randomIdle"]->update(timeDiff, this->randomIdleState);
+    this->actionInterpolants["randomIdleTransition"]->update(timeDiff, this->randomIdleState);
     this->actionInterpolants["randomSittingIdle"]->update(timeDiff, this->randomSittingIdleState);
   }
   void Avatar::update(float *scratchStack) {
@@ -485,6 +487,7 @@ namespace AnimationSystem {
     this->movementsTransitionFactor = fmin(fmax(movementsTransitionTime / 200, 0), 1);
 
     this->randomIdleTime = this->actionInterpolants["randomIdle"]->get();
+    this->randomIdleTransitionFactor = this->actionInterpolants["randomIdleTransition"]->getNormalized();
 
     this->randomSittingIdleTime = this->actionInterpolants["randomSittingIdle"]->get();
 
@@ -593,7 +596,7 @@ namespace AnimationSystem {
       this->randomIdleState = true;
       this->randomIdleDuration = j["duration"];
       this->randomIdleSpeed = j["speed"];
-      this->randomIdleTransition = j["transition"];
+      this->randomIdleStartTimeS = j["startTimeS"];
       this->randomIdleAnimationIndex = animationGroupsMap["randomIdle"][this->actions["randomIdle"]["animation"]].index;
     } else if (j["type"] == "randomSittingIdle") {
       this->randomSittingIdleState = true;
@@ -821,17 +824,12 @@ namespace AnimationSystem {
   float *_blendIdle(AnimationMapping &spec, Avatar *avatar) {
     float *v1 = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS + avatar->idleBias * animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
    
-    if (spec.isTop && avatar->randomIdleState) {
+    if (spec.isTop && avatar->randomIdleTransitionFactor > 0) {
       Animation *randomIdleAnimation = animationGroups[animationGroupIndexes.RandomIdle][avatar->randomIdleAnimationIndex];
-      float timeS = avatar->randomIdleTime / 1000;
+      float timeS = AnimationMixer::nowS - avatar->randomIdleStartTimeS;
       float t2 = min(timeS, avatar->randomIdleDuration);
       float *v2 = evaluateInterpolant(randomIdleAnimation, spec.index, t2 * avatar->randomIdleSpeed);
-
-      float f0 = t2 / avatar->randomIdleTransition;
-      float f1 = (avatar->randomIdleDuration - t2) / avatar->randomIdleTransition;
-      float f = min(f0, f1);
-      f = min(1, f);
-      interpolateFlat(v1, 0, v1, 0, v2, 0, f, spec.isPosition);
+      interpolateFlat(v1, 0, v1, 0, v2, 0, avatar->randomIdleTransitionFactor, spec.isPosition);
     }
     
     return v1;
