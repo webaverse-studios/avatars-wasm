@@ -115,6 +115,8 @@ namespace AnimationSystem {
     float danceFactor;
     float emoteTime;
     float lastEmoteTime;
+    float speakTime;
+    float lastSpeakTime;
     float idleWalkFactor;
     float useTime;
     float useAnimationEnvelopeLength;
@@ -141,7 +143,7 @@ namespace AnimationSystem {
     float idleBias;
     float sprintFactor;
     float movementsTransitionFactor;
-    float randomIdleTime;
+    // float randomIdleTime;
     float randomIdleDuration;
     float randomIdleSpeed;
     float randomIdleStartTimeS;
@@ -169,6 +171,7 @@ namespace AnimationSystem {
     bool gliderState;
     bool danceState;
     bool emoteState;
+    bool speakState;
     bool hurtState;
     bool readyGrabState;
     bool rightHandState;
@@ -186,6 +189,7 @@ namespace AnimationSystem {
     int sitAnimationIndex;
     int danceAnimationIndex;
     int emoteAnimationIndex;
+    int speakAnimationIndex;
     int useAnimationIndex;
     int useAnimationComboIndex;
     int hurtAnimationIndex;

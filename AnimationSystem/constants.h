@@ -100,6 +100,7 @@ public:
   int Emote;
   int EmoteSitting;
   int RandomIdle;
+  int Speak;
   int RandomSittingIdle;
   int Hold;
   int Hurt;
@@ -299,6 +300,15 @@ public:
   int Wiggle;
 };
 RandomIdleAnimationIndexes randomIdleAnimationIndexes;
+
+int speakAnimationIota = 0;
+class SpeakAnimationIndexes {
+public:
+  int Speak1;
+  int Speak2;
+  int Speak3;
+};
+SpeakAnimationIndexes speakAnimationIndexes;
 
 int randomSittingIdleAnimationIota = 0;
 class RandomSittingIdleAnimationIndexes {
@@ -1007,6 +1017,27 @@ AnimationGroupDeclarations declarations = {
         "wiggle",
         randomIdleAnimationIndexes.Wiggle = randomIdleAnimationIota++,
         "wiggle.fbx"
+      },
+    }
+  },
+  {
+    "speak",
+    animationGroupIndexes.Speak = animationGroupIota++,
+    {
+      {
+        "speak1",
+        speakAnimationIndexes.Speak1 = speakAnimationIota++,
+        "speak.fbx"
+      },
+      {
+        "speak2",
+        speakAnimationIndexes.Speak2 = speakAnimationIota++,
+        "speak.fbx"
+      },
+      {
+        "speak3",
+        speakAnimationIndexes.Speak3 = speakAnimationIota++,
+        "speak.fbx"
       },
     }
   },
