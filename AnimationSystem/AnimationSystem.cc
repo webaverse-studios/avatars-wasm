@@ -1022,21 +1022,7 @@ namespace AnimationSystem {
     float f = min(f0, f1);
     f = min(1, f);
 
-    if (spec.index == boneIndexes.Spine || spec.index == boneIndexes.Chest || spec.index == boneIndexes.UpperChest || spec.index == boneIndexes.Neck || spec.index == boneIndexes.Head) {
-      if (!spec.isPosition) {
-        multiplyQuaternionsFlat(spec.dst, 0, v2, 0, spec.dst, 0);
-      } else {
-        interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
-      }
-    } else {
-      if (!spec.isTop) {
-        f *= (1 - avatar->idleWalkFactor);
-      }
-
-      interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
-    }
-
-    // _clearXZ(spec.dst, spec.isPosition);
+    interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
   }
 
   void _blendUse(AnimationMapping &spec, Avatar *avatar) {
