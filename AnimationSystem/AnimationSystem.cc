@@ -219,7 +219,6 @@ namespace AnimationSystem {
     avatar->actionInterpolants["land"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["dance"] = new BiActionInterpolant(0, 200);
     avatar->actionInterpolants["emote"] = new InfiniteActionInterpolant(0);
-    avatar->actionInterpolants["speak"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["fallLoop"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["fallLoopTransition"] = new BiActionInterpolant(0, 300);
     avatar->actionInterpolants["hurt"] = new InfiniteActionInterpolant(0);
@@ -231,6 +230,7 @@ namespace AnimationSystem {
     avatar->actionInterpolants["movementsTransition"] = new BiActionInterpolant(0, 200);
     // avatar->actionInterpolants["randomIdle"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["randomIdleTransition"] = new BiActionInterpolant(0, 200);
+    avatar->actionInterpolants["speakTransition"] = new BiActionInterpolant(0, 200);
     avatar->actionInterpolants["randomSittingIdle"] = new InfiniteActionInterpolant(0);
 
     return avatar;
@@ -375,7 +375,6 @@ namespace AnimationSystem {
     this->actionInterpolants["land"]->update(timeDiff, this->landState && !this->flyState);
     this->actionInterpolants["dance"]->update(timeDiff, this->danceState);
     this->actionInterpolants["emote"]->update(timeDiff, this->emoteState);
-    this->actionInterpolants["speak"]->update(timeDiff, this->speakState);
     this->actionInterpolants["fallLoop"]->update(timeDiff, this->fallLoopState);
     this->actionInterpolants["fallLoopTransition"]->update(timeDiff, this->fallLoopState);
     this->actionInterpolants["hurt"]->update(timeDiff, this->hurtState);
@@ -387,6 +386,7 @@ namespace AnimationSystem {
     this->actionInterpolants["movementsTransition"]->update(timeDiff, this->movementsState);
     // this->actionInterpolants["randomIdle"]->update(timeDiff, this->randomIdleState);
     this->actionInterpolants["randomIdleTransition"]->update(timeDiff, this->randomIdleState);
+    this->actionInterpolants["speakTransition"]->update(timeDiff, this->speakState);
     this->actionInterpolants["randomSittingIdle"]->update(timeDiff, this->randomSittingIdleState);
   }
   void Avatar::update(float *scratchStack) {
@@ -411,7 +411,6 @@ namespace AnimationSystem {
 
     this->landWithMoving = scratchStack[index++];
     this->lastEmoteTime = scratchStack[index++];
-    this->lastSpeakTime = scratchStack[index++];
     this->useAnimationEnvelopeLength = scratchStack[index++];
 
     this->useAnimationIndex = (int)(scratchStack[index++]);
@@ -475,8 +474,6 @@ namespace AnimationSystem {
 
     this->emoteTime = this->actionInterpolants["emote"]->get();
 
-    this->speakTime = this->actionInterpolants["speak"]->get();
-
     this->fallLoopTime = this->actionInterpolants["fallLoop"]->get();
 
     this->fallLoopFactor = this->actionInterpolants["fallLoopTransition"]->getNormalized();
@@ -496,6 +493,8 @@ namespace AnimationSystem {
     // this->randomIdleTime = this->actionInterpolants["randomIdle"]->get();
     this->randomIdleTransitionFactor = this->actionInterpolants["randomIdleTransition"]->getNormalized();
 
+     this->speakTransitionFactor = this->actionInterpolants["speakTransition"]->getNormalized();
+
     this->randomSittingIdleTime = this->actionInterpolants["randomSittingIdle"]->get();
 
     // --- end: Update & Get value of ActionInterpolants
@@ -504,12 +503,6 @@ namespace AnimationSystem {
       this->emoteAnimationIndex = -1;
     } else {
       this->emoteAnimationIndex = animationGroupsMap["emote"][this->actions["emote"]["animation"]].index;
-    }
-
-    if (this->actions["speak"] == nullptr) {
-      this->speakAnimationIndex = -1;
-    } else {
-      this->speakAnimationIndex = animationGroupsMap["speak"][this->actions["speak"]["animation"]].index;
     }
 
     if (this->actions["sit"] == nullptr) {
@@ -593,8 +586,6 @@ namespace AnimationSystem {
       this->danceState = true;
     } else if (j["type"] == "emote") {
       this->emoteState = true;
-    } else if (j["type"] == "speak") {
-      this->speakState = true;
     } else if (j["type"] == "hurt") {
       this->hurtState = true;
     } else if (j["type"] == "readyGrab") {
@@ -613,6 +604,10 @@ namespace AnimationSystem {
       this->randomIdleSpeed = j["speed"];
       this->randomIdleStartTimeS = j["startTimeS"];
       this->randomIdleAnimationIndex = animationGroupsMap["randomIdle"][this->actions["randomIdle"]["animation"]].index;
+    } else if (j["type"] == "speak") {
+      this->speakState = true;
+      this->speakStartTimeS = j["startTimeS"];
+      this->speakAnimationIndex = animationGroupsMap["speak"][this->actions["speak"]["animation"]].index;
     } else if (j["type"] == "randomSittingIdle") {
       this->randomSittingIdleState = true;
       this->randomSittingIdleDuration = j["duration"];
@@ -667,8 +662,6 @@ namespace AnimationSystem {
       this->danceState = false;
     } else if (j["type"] == "emote") {
       this->emoteState = false;
-    } else if (j["type"] == "speak") {
-      this->speakState = false;
     } else if (j["type"] == "hurt") {
       this->hurtState = false;
     } else if (j["type"] == "readyGrab") {
@@ -683,6 +676,8 @@ namespace AnimationSystem {
       this->movementsState = false;
     } else if (j["type"] == "randomIdle") {
       this->randomIdleState = false;
+    } else if (j["type"] == "speak") {
+      this->speakState = false;
     } else if (j["type"] == "randomSittingIdle") {
       this->randomSittingIdleState = false;
     }
@@ -852,6 +847,20 @@ namespace AnimationSystem {
     return v1;
   }
 
+  float *_blendSpeak(AnimationMapping &spec, Avatar *avatar) {
+    float *v1 = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS + avatar->idleBias * animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
+   
+    if (spec.isTop && avatar->speakTransitionFactor > 0) {
+      Animation *speakAnimation = animationGroups[animationGroupIndexes.Speak][avatar->speakAnimationIndex < 0 ? defaultSpeakAnimationIndex : avatar->speakAnimationIndex];
+      float timeS = AnimationMixer::nowS - avatar->speakStartTimeS;
+      float t2 = min(timeS, speakAnimation->duration);
+      float *v2 = evaluateInterpolant(speakAnimation, spec.index, t2);
+      interpolateFlat(v1, 0, v1, 0, v2, 0, avatar->speakTransitionFactor, spec.isPosition);
+    }
+    
+    return v1;
+  }
+
   void _handleDefault(AnimationMapping &spec, Avatar *avatar) {
     // note: Big performance influnce!!! Do not update `directionsWeightsWithReverse` here, because of will run 53 times ( 53 bones )!!! todo: Notice codes which will run 53 times!!!
     // directionsWeightsWithReverse["forward"] = avatar->forwardFactor;
@@ -873,7 +882,7 @@ namespace AnimationSystem {
     _clearXZ(spec.dst, spec.isPosition);
 
     // blend idle ---
-    localVecQuatPtr = _blendIdle(spec, avatar);
+    localVecQuatPtr = avatar->speakTransitionFactor > 0 ? _blendSpeak(spec, avatar) : _blendIdle(spec, avatar);
     interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr, 0, 1 - avatar->idleWalkFactor, spec.isPosition);
 
     // crouchAnimations
@@ -1008,21 +1017,6 @@ namespace AnimationSystem {
     }
 
     // _clearXZ(spec.dst, spec.isPosition);
-  }
-
-  void _blendSpeak(AnimationMapping &spec, Avatar *avatar) {
-    _handleDefault(spec, avatar);
-
-    Animation *speakAnimation = animationGroups[animationGroupIndexes.Speak][avatar->speakAnimationIndex < 0 ? defaultSpeakAnimationIndex : avatar->speakAnimationIndex];
-    float t2 = min(avatar->speakTime / 1000, speakAnimation->duration);
-    float *v2 = evaluateInterpolant(speakAnimation, spec.index, t2);
-
-    float f0 = t2 / 0.2;
-    float f1 = (speakAnimation->duration - t2) / 0.2;
-    float f = min(f0, f1);
-    f = min(1, f);
-
-    interpolateFlat(spec.dst, 0, spec.dst, 0, v2, 0, f, spec.isPosition);
   }
 
   void _blendUse(AnimationMapping &spec, Avatar *avatar) {
@@ -1462,8 +1456,6 @@ namespace AnimationSystem {
         _blendDance(spec, this->avatar);
       } else if (avatar->emoteState) {
         _blendEmote(spec, this->avatar);
-      } else if (avatar->speakState) {
-        _blendSpeak(spec, this->avatar);
       } else if (
         avatar->useAnimationIndex >= 0 ||
         avatar->useAnimationComboIndex >= 0 ||
