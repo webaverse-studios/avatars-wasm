@@ -254,12 +254,20 @@ public:
   int Excited;
   int Explain;
   int HeadShake2;
-  int Keyboard;
   int KeyboardSoft;
   int Listen;
   int Shocked;
-  int Tantrum;
   int Upset;
+
+  int Applaud;
+  int Dab;
+  int Blessing;
+  int Love;
+  int Kiss;
+  int Anxiety;
+  int Stop;
+  int Celebrate;
+
 };
 EmoteAnimationIndexes emoteAnimationIndexes;
 
@@ -842,11 +850,6 @@ AnimationGroupDeclarations declarations = {
         "head_shake_2.fbx"
       },
       {
-        "keyboard",
-        emoteAnimationIndexes.Keyboard = emoteAnimationIota++,
-        "keyboard.fbx"
-      },
-      {
         "keyboardSoft",
         emoteAnimationIndexes.KeyboardSoft = emoteAnimationIota++,
         "keyboard_soft.fbx"
@@ -862,14 +865,50 @@ AnimationGroupDeclarations declarations = {
         "shocked.fbx"
       },
       {
-        "tantrum",
-        emoteAnimationIndexes.Tantrum = emoteAnimationIota++,
-        "tantrum_head.fbx"
-      },
-      {
         "upset",
         emoteAnimationIndexes.Upset = emoteAnimationIota++,
         "upset.fbx"
+      },
+
+      {
+        "applaud",
+        emoteAnimationIndexes.Applaud = emoteAnimationIota++,
+        "applaud.fbx"
+      },
+      {
+        "dab",
+        emoteAnimationIndexes.Dab = emoteAnimationIota++,
+        "dab.fbx"
+      },
+      {
+        "blessing",
+        emoteAnimationIndexes.Blessing = emoteAnimationIota++,
+        "blessing.fbx"
+      },
+      {
+        "love",
+        emoteAnimationIndexes.Love = emoteAnimationIota++,
+        "love.fbx"
+      },
+      {
+        "kiss",
+        emoteAnimationIndexes.Kiss = emoteAnimationIota++,
+        "kiss.fbx"
+      },
+      {
+        "anxiety",
+        emoteAnimationIndexes.Anxiety = emoteAnimationIota++,
+        "anxiety.fbx"
+      },
+      {
+        "stop",
+        emoteAnimationIndexes.Stop = emoteAnimationIota++,
+        "stop.fbx"
+      },
+      {
+        "celebrate",
+        emoteAnimationIndexes.Celebrate = emoteAnimationIota++,
+        "celebrate.fbx"
       },
     }
   },
