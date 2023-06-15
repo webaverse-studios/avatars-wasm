@@ -923,29 +923,30 @@ namespace AnimationSystem {
   }
 
   void _handleDefault(AnimationMapping &spec, Avatar *avatar) {
-    Animation *randomIdleAnimation = animationGroups[animationGroupIndexes.RandomIdle][avatar->randomIdleAnimationIndex];
-    Animation *speakAnimation = animationGroups[animationGroupIndexes.Speak][avatar->speakAnimationIndex < 0 ? defaultSpeakAnimationIndex : avatar->speakAnimationIndex];
-    Animation *thinkAnimation = animationGroups[animationGroupIndexes.Think][avatar->thinkAnimationIndex < 0 ? defaultThinkAnimationIndex : avatar->thinkAnimationIndex];
-    Animation *listenAnimation = animationGroups[animationGroupIndexes.Listen][avatar->listenAnimationIndex < 0 ? defaultListenAnimationIndex : avatar->listenAnimationIndex];
-    
-    localAnimationGroups[0] = randomIdleAnimation;
-    localWeightArr[0] = avatar->randomIdleTransitionFactor;
-    localAnimationGroups[1] = speakAnimation;
-    localWeightArr[1] = avatar->speakTransitionFactor;
-    localAnimationGroups[2] = thinkAnimation;
-    localWeightArr[2] = avatar->thinkTransitionFactor;
-    localAnimationGroups[3] = listenAnimation;
-    localWeightArr[3] = avatar->listenTransitionFactor;
-
-    
-    localVecQuatPtr = doBlendList(spec, localAnimationGroups, localWeightArr, AnimationMixer::nowS);
-    copyValue(spec.dst, localVecQuatPtr, spec.isPosition);
-    // _clearXZ(spec.dst, spec.isPosition);
-
     // blend idle ---
     localVecQuatPtr = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS + avatar->idleBias * animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
-    interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr, 0, 1 - avatar->idleFactorTransitionFactor, spec.isPosition);
+    copyValue(spec.dst, localVecQuatPtr, spec.isPosition);
+    
+    if (spec.isTop) { 
+      Animation *randomIdleAnimation = animationGroups[animationGroupIndexes.RandomIdle][avatar->randomIdleAnimationIndex];
+      Animation *speakAnimation = animationGroups[animationGroupIndexes.Speak][avatar->speakAnimationIndex < 0 ? defaultSpeakAnimationIndex : avatar->speakAnimationIndex];
+      Animation *thinkAnimation = animationGroups[animationGroupIndexes.Think][avatar->thinkAnimationIndex < 0 ? defaultThinkAnimationIndex : avatar->thinkAnimationIndex];
+      Animation *listenAnimation = animationGroups[animationGroupIndexes.Listen][avatar->listenAnimationIndex < 0 ? defaultListenAnimationIndex : avatar->listenAnimationIndex];
+      
+      localAnimationGroups[0] = randomIdleAnimation;
+      localWeightArr[0] = avatar->randomIdleTransitionFactor;
+      localAnimationGroups[1] = speakAnimation;
+      localWeightArr[1] = avatar->speakTransitionFactor;
+      localAnimationGroups[2] = thinkAnimation;
+      localWeightArr[2] = avatar->thinkTransitionFactor;
+      localAnimationGroups[3] = listenAnimation;
+      localWeightArr[3] = avatar->listenTransitionFactor;
 
+      
+      localVecQuatPtr = doBlendList(spec, localAnimationGroups, localWeightArr, AnimationMixer::nowS);
+      interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr, 0, avatar->idleFactorTransitionFactor, spec.isPosition);
+    }
+    
     // // blend companion state
     // if (avatar->thinkTransitionFactor > 0) {
     //   localVecQuatPtr = _blendThink(spec, avatar);
