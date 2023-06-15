@@ -1128,7 +1128,7 @@ AnimationGroupDeclarations declarations = {
       {
         "listen1",
         listenAnimationIndexes.Listen1 = listenAnimationIota++,
-        "listen.fbx"
+        "listen2.fbx"
       },
       {
         "listen2",

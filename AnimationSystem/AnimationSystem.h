@@ -148,6 +148,7 @@ namespace AnimationSystem {
     float thinkTransitionFactor;
     float listenStartTimeS;
     float listenTransitionFactor;
+    float idleFactorTransitionFactor;
     float randomIdleDuration;
     float randomIdleSpeed;
     float randomIdleStartTimeS;

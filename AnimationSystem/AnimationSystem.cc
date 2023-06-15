@@ -11,6 +11,9 @@ namespace AnimationSystem {
   std::vector<std::vector<Animation *>> animationGroups;
   std::unordered_map<std::string, std::unordered_map<std::string, AnimationDeclaration>> animationGroupsMap;
 
+  std::vector<Animation*> localAnimationGroups(4); 
+  // std::vector<float*> localWeightArr(4); 
+
   float AnimationMixer::nowS;
 
   unsigned int defaultSitAnimationIndex;
@@ -26,9 +29,11 @@ namespace AnimationSystem {
   float localVectorArr[3];
   float localQuaternionArr[4];
   float localVecQuatArr[4];
-
+  float localWeightArr[4];
+  
   float *localVecQuatPtr;
   float *localVecQuatPtr2;
+  float *localVecQuatPtr3;
 
   float directionsWeights[4];
   float directionsWeightsWithReverse[6];
@@ -235,6 +240,7 @@ namespace AnimationSystem {
     avatar->actionInterpolants["speakTransition"] = new BiActionInterpolant(0, 200);
     avatar->actionInterpolants["thinkTransition"] = new BiActionInterpolant(0, 200);
     avatar->actionInterpolants["listenTransition"] = new BiActionInterpolant(0, 200);
+    avatar->actionInterpolants["idleFactorTransition"] = new BiActionInterpolant(0, 200);
     avatar->actionInterpolants["randomSittingIdle"] = new InfiniteActionInterpolant(0);
 
     return avatar;
@@ -395,6 +401,7 @@ namespace AnimationSystem {
     this->actionInterpolants["speakTransition"]->update(timeDiff, this->speakState);
     this->actionInterpolants["thinkTransition"]->update(timeDiff, this->thinkState);
     this->actionInterpolants["listenTransition"]->update(timeDiff, this->listenState);
+    this->actionInterpolants["idleFactorTransition"]->update(timeDiff, this->speakState || this->thinkState || this->listenState);
     this->actionInterpolants["randomSittingIdle"]->update(timeDiff, this->randomSittingIdleState);
   }
   void Avatar::update(float *scratchStack) {
@@ -506,6 +513,8 @@ namespace AnimationSystem {
     this->thinkTransitionFactor = this->actionInterpolants["thinkTransition"]->getNormalized();
 
     this->listenTransitionFactor = this->actionInterpolants["listenTransition"]->getNormalized();
+    
+    this->idleFactorTransitionFactor = this->actionInterpolants["idleFactorTransition"]->getNormalized();
 
     this->randomSittingIdleTime = this->actionInterpolants["randomSittingIdle"]->get();
 
@@ -914,48 +923,41 @@ namespace AnimationSystem {
   }
 
   void _handleDefault(AnimationMapping &spec, Avatar *avatar) {
-    // note: Big performance influnce!!! Do not update `directionsWeightsWithReverse` here, because of will run 53 times ( 53 bones )!!! todo: Notice codes which will run 53 times!!!
-    // directionsWeightsWithReverse["forward"] = avatar->forwardFactor;
-    // directionsWeightsWithReverse["backward"] = avatar->backwardFactor;
-    // directionsWeightsWithReverse["left"] = avatar->mirrorLeftFactorReverse;
-    // directionsWeightsWithReverse["leftMirror"] = avatar->mirrorLeftFactor;
-    // directionsWeightsWithReverse["right"] = avatar->mirrorRightFactorReverse;
-    // directionsWeightsWithReverse["rightMirror"] = avatar->mirrorRightFactor;
+    Animation *randomIdleAnimation = animationGroups[animationGroupIndexes.RandomIdle][avatar->randomIdleAnimationIndex];
+    Animation *speakAnimation = animationGroups[animationGroupIndexes.Speak][avatar->speakAnimationIndex < 0 ? defaultSpeakAnimationIndex : avatar->speakAnimationIndex];
+    Animation *thinkAnimation = animationGroups[animationGroupIndexes.Think][avatar->thinkAnimationIndex < 0 ? defaultThinkAnimationIndex : avatar->thinkAnimationIndex];
+    Animation *listenAnimation = animationGroups[animationGroupIndexes.Listen][avatar->listenAnimationIndex < 0 ? defaultListenAnimationIndex : avatar->listenAnimationIndex];
+    
+    localAnimationGroups[0] = randomIdleAnimation;
+    localWeightArr[0] = avatar->randomIdleTransitionFactor;
+    localAnimationGroups[1] = speakAnimation;
+    localWeightArr[1] = avatar->speakTransitionFactor;
+    localAnimationGroups[2] = thinkAnimation;
+    localWeightArr[2] = avatar->thinkTransitionFactor;
+    localAnimationGroups[3] = listenAnimation;
+    localWeightArr[3] = avatar->listenTransitionFactor;
 
-    // // walkAnimations
-    // localVecQuatPtr2 = doBlendList(spec, animationGroups[animationGroupIndexes.Walk], directionsWeightsWithReverse, avatar->landTimeS);
-    // copyValue(spec.dst, localVecQuatPtr2, spec.isPosition);
-
-    // // runAnimations
-    // localVecQuatPtr2 = doBlendList(spec, animationGroups[animationGroupIndexes.Run], directionsWeightsWithReverse, avatar->landTimeS);
-
-    // // blend walk run
-    // interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr2, 0, avatar->walkRunFactor, spec.isPosition);
+    
+    localVecQuatPtr = doBlendList(spec, localAnimationGroups, localWeightArr, AnimationMixer::nowS);
+    copyValue(spec.dst, localVecQuatPtr, spec.isPosition);
     // _clearXZ(spec.dst, spec.isPosition);
 
-    // blend companion state
-    if (avatar->thinkTransitionFactor > 0) {
-      localVecQuatPtr = _blendThink(spec, avatar);
-    } else if (avatar->speakTransitionFactor > 0) {
-      localVecQuatPtr = _blendSpeak(spec, avatar);
-    } else if (avatar->listenTransitionFactor > 0) {
-      localVecQuatPtr = _blendListen(spec, avatar);
-    } else {
-      localVecQuatPtr = _blendIdle(spec, avatar);
-    }
-    interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr, 0, 1 - avatar->idleWalkFactor, spec.isPosition);
+    // blend idle ---
+    localVecQuatPtr = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS + avatar->idleBias * animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
+    interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr, 0, 1 - avatar->idleFactorTransitionFactor, spec.isPosition);
 
-    // // crouchAnimations
-    // localVecQuatPtr2 = doBlendList(spec, animationGroups[animationGroupIndexes.Crouch], directionsWeightsWithReverse, avatar->landTimeS);
-    // copyValue(localVecQuatArr, localVecQuatPtr2, spec.isPosition);
-    // _clearXZ(localVecQuatArr, spec.isPosition);
-
-    // // blend crouch idle ---
-    // localVecQuatPtr = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.CrouchIdle], spec.index, fmod(avatar->timeSinceLastMoveS, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.CrouchIdle]->duration));
-    // interpolateFlat(localVecQuatArr, 0, localVecQuatArr, 0, localVecQuatPtr, 0, 1 - avatar->idleWalkFactor, spec.isPosition);
-
-    // // blend walkRun and crouch
-    // interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatArr, 0, avatar->crouchFactor, spec.isPosition);
+    // // blend companion state
+    // if (avatar->thinkTransitionFactor > 0) {
+    //   localVecQuatPtr = _blendThink(spec, avatar);
+    // } else if (avatar->speakTransitionFactor > 0) {
+    //   localVecQuatPtr = _blendSpeak(spec, avatar);
+    // } else if (avatar->listenTransitionFactor > 0) {
+    //   localVecQuatPtr = _blendListen(spec, avatar);
+    // } else {
+    //   localVecQuatPtr = _blendIdle(spec, avatar);
+    // }
+    // copyValue(spec.dst, localVecQuatPtr, spec.isPosition);
+    // interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr, 0, 1 - avatar->idleWalkFactor, spec.isPosition);
   }
 
   void _blendDoubleJump(AnimationMapping &spec, Avatar *avatar) {
