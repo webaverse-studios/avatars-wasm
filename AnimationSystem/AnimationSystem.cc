@@ -12,7 +12,6 @@ namespace AnimationSystem {
   std::unordered_map<std::string, std::unordered_map<std::string, AnimationDeclaration>> animationGroupsMap;
 
   std::vector<Animation*> localAnimationGroups(4); 
-  // std::vector<float*> localWeightArr(4); 
 
   float AnimationMixer::nowS;
 
@@ -33,8 +32,7 @@ namespace AnimationSystem {
   
   float *localVecQuatPtr;
   float *localVecQuatPtr2;
-  float *localVecQuatPtr3;
-
+  
   float directionsWeights[4];
   float directionsWeightsWithReverse[6];
 
@@ -627,15 +625,12 @@ namespace AnimationSystem {
       this->randomIdleAnimationIndex = animationGroupsMap["randomIdle"][this->actions["randomIdle"]["animation"]].index;
     } else if (j["type"] == "speak") {
       this->speakState = true;
-      this->speakStartTimeS = j["startTimeS"];
       this->speakAnimationIndex = animationGroupsMap["speak"][this->actions["speak"]["animation"]].index;
     } else if (j["type"] == "think") {
       this->thinkState = true;
-      this->thinkStartTimeS = j["startTimeS"];
       this->thinkAnimationIndex = animationGroupsMap["think"][this->actions["think"]["animation"]].index;
     } else if (j["type"] == "listen") {
       this->listenState = true;
-      this->listenStartTimeS = j["startTimeS"];
       this->listenAnimationIndex = animationGroupsMap["listen"][this->actions["listen"]["animation"]].index;
     } else if (j["type"] == "randomSittingIdle") {
       this->randomSittingIdleState = true;
@@ -864,62 +859,6 @@ namespace AnimationSystem {
       }
     }
     return resultVecQuat;
-  }
-
-  float *_blendIdle(AnimationMapping &spec, Avatar *avatar) {
-    float *v1 = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS + avatar->idleBias * animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
-   
-    if (spec.isTop && avatar->randomIdleTransitionFactor > 0) {
-      Animation *randomIdleAnimation = animationGroups[animationGroupIndexes.RandomIdle][avatar->randomIdleAnimationIndex];
-      float timeS = AnimationMixer::nowS - avatar->randomIdleStartTimeS;
-      float t2 = min(timeS, avatar->randomIdleDuration);
-      float *v2 = evaluateInterpolant(randomIdleAnimation, spec.index, t2 * avatar->randomIdleSpeed);
-      interpolateFlat(v1, 0, v1, 0, v2, 0, avatar->randomIdleTransitionFactor, spec.isPosition);
-    }
-    
-    return v1;
-  }
-
-  float *_blendSpeak(AnimationMapping &spec, Avatar *avatar) {
-    float *v1 = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS + avatar->idleBias * animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
-
-    if (spec.isTop && avatar->speakTransitionFactor > 0) {
-      Animation *speakAnimation = animationGroups[animationGroupIndexes.Speak][avatar->speakAnimationIndex < 0 ? defaultSpeakAnimationIndex : avatar->speakAnimationIndex];
-      float timeS = AnimationMixer::nowS - avatar->speakStartTimeS;
-      float t2 = min(timeS, speakAnimation->duration);
-      float *v2 = evaluateInterpolant(speakAnimation, spec.index, t2);
-      interpolateFlat(v1, 0, v1, 0, v2, 0, avatar->speakTransitionFactor, spec.isPosition);
-    }
-
-    return v1;
-  }
-
-  float *_blendThink(AnimationMapping &spec, Avatar *avatar) {
-    float *v1 = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS + avatar->idleBias * animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
-
-    if (spec.isTop && avatar->thinkTransitionFactor > 0) {
-      Animation *thinkAnimation = animationGroups[animationGroupIndexes.Think][avatar->thinkAnimationIndex < 0 ? defaultThinkAnimationIndex : avatar->thinkAnimationIndex];
-      float timeS = AnimationMixer::nowS - avatar->thinkStartTimeS;
-      float t2 = min(timeS, thinkAnimation->duration);
-      float *v2 = evaluateInterpolant(thinkAnimation, spec.index, t2);
-      interpolateFlat(v1, 0, v1, 0, v2, 0, avatar->thinkTransitionFactor, spec.isPosition);
-    }
-
-    return v1;
-  }
-
-  float *_blendListen(AnimationMapping &spec, Avatar *avatar) {
-    float *v1 = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle], spec.index, fmod(avatar->timeSinceLastMoveS + avatar->idleBias * animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.Idle]->duration));
-
-    if (spec.isTop && avatar->listenTransitionFactor > 0) {
-      Animation *listenAnimation = animationGroups[animationGroupIndexes.Listen][avatar->listenAnimationIndex < 0 ? defaultListenAnimationIndex : avatar->listenAnimationIndex];
-      float timeS = AnimationMixer::nowS - avatar->listenStartTimeS;
-      float t2 = min(timeS, listenAnimation->duration);
-      float *v2 = evaluateInterpolant(listenAnimation, spec.index, t2);
-      interpolateFlat(v1, 0, v1, 0, v2, 0, avatar->listenTransitionFactor, spec.isPosition);
-    }
-
-    return v1;
   }
 
   void _handleDefault(AnimationMapping &spec, Avatar *avatar) {
