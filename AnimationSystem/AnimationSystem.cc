@@ -922,18 +922,18 @@ namespace AnimationSystem {
     // directionsWeightsWithReverse["right"] = avatar->mirrorRightFactorReverse;
     // directionsWeightsWithReverse["rightMirror"] = avatar->mirrorRightFactor;
 
-    // walkAnimations
-    localVecQuatPtr2 = doBlendList(spec, animationGroups[animationGroupIndexes.Walk], directionsWeightsWithReverse, avatar->landTimeS);
-    copyValue(spec.dst, localVecQuatPtr2, spec.isPosition);
+    // // walkAnimations
+    // localVecQuatPtr2 = doBlendList(spec, animationGroups[animationGroupIndexes.Walk], directionsWeightsWithReverse, avatar->landTimeS);
+    // copyValue(spec.dst, localVecQuatPtr2, spec.isPosition);
 
-    // runAnimations
-    localVecQuatPtr2 = doBlendList(spec, animationGroups[animationGroupIndexes.Run], directionsWeightsWithReverse, avatar->landTimeS);
+    // // runAnimations
+    // localVecQuatPtr2 = doBlendList(spec, animationGroups[animationGroupIndexes.Run], directionsWeightsWithReverse, avatar->landTimeS);
 
-    // blend walk run
-    interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr2, 0, avatar->walkRunFactor, spec.isPosition);
-    _clearXZ(spec.dst, spec.isPosition);
+    // // blend walk run
+    // interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr2, 0, avatar->walkRunFactor, spec.isPosition);
+    // _clearXZ(spec.dst, spec.isPosition);
 
-    // blend idle ---
+    // blend companion state
     if (avatar->thinkTransitionFactor > 0) {
       localVecQuatPtr = _blendThink(spec, avatar);
     } else if (avatar->speakTransitionFactor > 0) {
@@ -945,17 +945,17 @@ namespace AnimationSystem {
     }
     interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr, 0, 1 - avatar->idleWalkFactor, spec.isPosition);
 
-    // crouchAnimations
-    localVecQuatPtr2 = doBlendList(spec, animationGroups[animationGroupIndexes.Crouch], directionsWeightsWithReverse, avatar->landTimeS);
-    copyValue(localVecQuatArr, localVecQuatPtr2, spec.isPosition);
-    _clearXZ(localVecQuatArr, spec.isPosition);
+    // // crouchAnimations
+    // localVecQuatPtr2 = doBlendList(spec, animationGroups[animationGroupIndexes.Crouch], directionsWeightsWithReverse, avatar->landTimeS);
+    // copyValue(localVecQuatArr, localVecQuatPtr2, spec.isPosition);
+    // _clearXZ(localVecQuatArr, spec.isPosition);
 
-    // blend crouch idle ---
-    localVecQuatPtr = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.CrouchIdle], spec.index, fmod(avatar->timeSinceLastMoveS, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.CrouchIdle]->duration));
-    interpolateFlat(localVecQuatArr, 0, localVecQuatArr, 0, localVecQuatPtr, 0, 1 - avatar->idleWalkFactor, spec.isPosition);
+    // // blend crouch idle ---
+    // localVecQuatPtr = evaluateInterpolant(animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.CrouchIdle], spec.index, fmod(avatar->timeSinceLastMoveS, animationGroups[animationGroupIndexes.Single][singleAnimationIndexes.CrouchIdle]->duration));
+    // interpolateFlat(localVecQuatArr, 0, localVecQuatArr, 0, localVecQuatPtr, 0, 1 - avatar->idleWalkFactor, spec.isPosition);
 
-    // blend walkRun and crouch
-    interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatArr, 0, avatar->crouchFactor, spec.isPosition);
+    // // blend walkRun and crouch
+    // interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatArr, 0, avatar->crouchFactor, spec.isPosition);
   }
 
   void _blendDoubleJump(AnimationMapping &spec, Avatar *avatar) {
