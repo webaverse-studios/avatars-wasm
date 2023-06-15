@@ -144,6 +144,10 @@ namespace AnimationSystem {
     // float randomIdleTime;
     float speakStartTimeS;
     float speakTransitionFactor;
+    float thinkStartTimeS;
+    float thinkTransitionFactor;
+    float listenStartTimeS;
+    float listenTransitionFactor;
     float randomIdleDuration;
     float randomIdleSpeed;
     float randomIdleStartTimeS;
@@ -179,6 +183,8 @@ namespace AnimationSystem {
     bool movementsState;
     bool randomIdleState;
     bool speakState;
+    bool thinkState;
+    bool listenState;
     bool randomSittingIdleState;
 
     //
@@ -196,6 +202,8 @@ namespace AnimationSystem {
     int aimAnimationIndex;
     int randomIdleAnimationIndex;
     int speakAnimationIndex;
+    int thinkAnimationIndex;
+    int listenAnimationIndex;
     int randomSittingIdleAnimationIndex;
 
     std::vector<int> useAnimationEnvelopeIndices;

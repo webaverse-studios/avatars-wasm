@@ -101,6 +101,8 @@ public:
   int EmoteSitting;
   int RandomIdle;
   int Speak;
+  int Think;
+  int Listen;
   int RandomSittingIdle;
   int Hold;
   int Hurt;
@@ -317,6 +319,24 @@ public:
   int Speak3;
 };
 SpeakAnimationIndexes speakAnimationIndexes;
+
+int thinkAnimationIota = 0;
+class ThinkAnimationIndexes {
+public:
+  int Think1;
+  int Think2;
+  int Think3;
+};
+ThinkAnimationIndexes thinkAnimationIndexes;
+
+int listenAnimationIota = 0;
+class ListenAnimationIndexes {
+public:
+  int Listen1;
+  int Listen2;
+  int Listen3;
+};
+ListenAnimationIndexes listenAnimationIndexes;
 
 int randomSittingIdleAnimationIota = 0;
 class RandomSittingIdleAnimationIndexes {
@@ -1077,6 +1097,48 @@ AnimationGroupDeclarations declarations = {
         "speak3",
         speakAnimationIndexes.Speak3 = speakAnimationIota++,
         "explain.fbx"
+      },
+    }
+  },
+  {
+    "think",
+    animationGroupIndexes.Think = animationGroupIota++,
+    {
+      {
+        "think1",
+        thinkAnimationIndexes.Think1 = thinkAnimationIota++,
+        "think.fbx"
+      },
+      {
+        "think2",
+        thinkAnimationIndexes.Think2 = thinkAnimationIota++,
+        "think.fbx"
+      },
+      {
+        "think3",
+        thinkAnimationIndexes.Think3 = thinkAnimationIota++,
+        "think.fbx"
+      },
+    }
+  },
+  {
+    "listen",
+    animationGroupIndexes.Listen = animationGroupIota++,
+    {
+      {
+        "listen1",
+        listenAnimationIndexes.Listen1 = listenAnimationIota++,
+        "listen.fbx"
+      },
+      {
+        "listen2",
+        listenAnimationIndexes.Listen2 = listenAnimationIota++,
+        "listen2.fbx"
+      },
+      {
+        "listen3",
+        listenAnimationIndexes.Listen3 = listenAnimationIota++,
+        "listen2.fbx"
       },
     }
   },
