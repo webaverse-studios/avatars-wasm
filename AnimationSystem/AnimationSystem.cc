@@ -885,19 +885,6 @@ namespace AnimationSystem {
       localVecQuatPtr = doBlendList(spec, localAnimationGroups, localWeightArr, AnimationMixer::nowS);
       interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr, 0, avatar->idleFactorTransitionFactor, spec.isPosition);
     }
-    
-    // // blend companion state
-    // if (avatar->thinkTransitionFactor > 0) {
-    //   localVecQuatPtr = _blendThink(spec, avatar);
-    // } else if (avatar->speakTransitionFactor > 0) {
-    //   localVecQuatPtr = _blendSpeak(spec, avatar);
-    // } else if (avatar->listenTransitionFactor > 0) {
-    //   localVecQuatPtr = _blendListen(spec, avatar);
-    // } else {
-    //   localVecQuatPtr = _blendIdle(spec, avatar);
-    // }
-    // copyValue(spec.dst, localVecQuatPtr, spec.isPosition);
-    // interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr, 0, 1 - avatar->idleWalkFactor, spec.isPosition);
   }
 
   void _blendDoubleJump(AnimationMapping &spec, Avatar *avatar) {
