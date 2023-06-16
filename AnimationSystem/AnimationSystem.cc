@@ -29,6 +29,7 @@ namespace AnimationSystem {
   float localQuaternionArr[4];
   float localVecQuatArr[4];
   float localWeightArr[4];
+  float localStartTimeSArr[4];
   
   float *localVecQuatPtr;
   float *localVecQuatPtr2;
@@ -233,7 +234,6 @@ namespace AnimationSystem {
     avatar->actionInterpolants["sprint"] = new BiActionInterpolant(0, 200);
     avatar->actionInterpolants["movements"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["movementsTransition"] = new BiActionInterpolant(0, 200);
-    // avatar->actionInterpolants["randomIdle"] = new InfiniteActionInterpolant(0);
     avatar->actionInterpolants["randomIdleTransition"] = new BiActionInterpolant(0, 200);
     avatar->actionInterpolants["speakTransition"] = new BiActionInterpolant(0, 200);
     avatar->actionInterpolants["thinkTransition"] = new BiActionInterpolant(0, 200);
@@ -394,7 +394,6 @@ namespace AnimationSystem {
     this->actionInterpolants["sprint"]->update(timeDiff, this->sprintState);
     this->actionInterpolants["movements"]->update(timeDiff, this->movementsState);
     this->actionInterpolants["movementsTransition"]->update(timeDiff, this->movementsState);
-    // this->actionInterpolants["randomIdle"]->update(timeDiff, this->randomIdleState);
     this->actionInterpolants["randomIdleTransition"]->update(timeDiff, this->randomIdleState);
     this->actionInterpolants["speakTransition"]->update(timeDiff, this->speakState);
     this->actionInterpolants["thinkTransition"]->update(timeDiff, this->thinkState);
@@ -503,7 +502,6 @@ namespace AnimationSystem {
     float movementsTransitionTime = this->actionInterpolants["movementsTransition"]->get();
     this->movementsTransitionFactor = fmin(fmax(movementsTransitionTime / 200, 0), 1);
 
-    // this->randomIdleTime = this->actionInterpolants["randomIdle"]->get();
     this->randomIdleTransitionFactor = this->actionInterpolants["randomIdleTransition"]->getNormalized();
 
     this->speakTransitionFactor = this->actionInterpolants["speakTransition"]->getNormalized();
@@ -619,18 +617,23 @@ namespace AnimationSystem {
       this->movementsState = true;
     } else if (j["type"] == "randomIdle") {
       this->randomIdleState = true;
-      this->randomIdleDuration = j["duration"];
-      this->randomIdleSpeed = j["speed"];
       this->randomIdleStartTimeS = j["startTimeS"];
+      localStartTimeSArr[0] = this->randomIdleStartTimeS;
       this->randomIdleAnimationIndex = animationGroupsMap["randomIdle"][this->actions["randomIdle"]["animation"]].index;
     } else if (j["type"] == "speak") {
       this->speakState = true;
+      this->speakStartTimeS = j["startTimeS"];
+      localStartTimeSArr[1] = this->speakStartTimeS;
       this->speakAnimationIndex = animationGroupsMap["speak"][this->actions["speak"]["animation"]].index;
     } else if (j["type"] == "think") {
       this->thinkState = true;
+      this->thinkStartTimeS = j["startTimeS"];
+      localStartTimeSArr[2] = this->thinkStartTimeS;
       this->thinkAnimationIndex = animationGroupsMap["think"][this->actions["think"]["animation"]].index;
     } else if (j["type"] == "listen") {
       this->listenState = true;
+      this->listenStartTimeS = j["startTimeS"];
+      localStartTimeSArr[3] = this->listenStartTimeS;
       this->listenAnimationIndex = animationGroupsMap["listen"][this->actions["listen"]["animation"]].index;
     } else if (j["type"] == "randomSittingIdle") {
       this->randomSittingIdleState = true;
@@ -835,7 +838,7 @@ namespace AnimationSystem {
     return interpolant->resultBuffer;
   }
 
-  float *doBlendList(AnimationMapping &spec, std::vector<Animation *> &animations, float *weights, float &timeS) { // note: Big performance influnce!!! Use `&` to prevent copy parameter's values!!!
+ float *doBlendList(AnimationMapping &spec, std::vector<Animation *> &animations, float *weights, float &timeS) { // note: Big performance influnce!!! Use `&` to prevent copy parameter's values!!!
     float *resultVecQuat;
     unsigned int indexWeightBigThanZero = 0;
     float currentWeight = 0;
@@ -844,6 +847,34 @@ namespace AnimationSystem {
       if (weight > 0) {
         Animation *animation = animations[i];
         float *vecQuat = evaluateInterpolant(animation, spec.index, fmod(timeS, animation->duration));
+        if (indexWeightBigThanZero == 0) {
+          resultVecQuat = vecQuat;
+
+          indexWeightBigThanZero++;
+          currentWeight = weight;
+        } else {
+          float t = weight / (currentWeight + weight);
+          interpolateFlat(resultVecQuat, 0, resultVecQuat, 0, vecQuat, 0, t, spec.isPosition);
+
+          indexWeightBigThanZero++;
+          currentWeight += weight;
+        }
+      }
+    }
+    return resultVecQuat;
+  }
+
+  float *doBlendCompanionState(AnimationMapping &spec, std::vector<Animation *> &animations, float *weights) { // note: Big performance influnce!!! Use `&` to prevent copy parameter's values!!!
+    float *resultVecQuat;
+    unsigned int indexWeightBigThanZero = 0;
+    float currentWeight = 0;
+    for (int i = 0; i < animations.size(); i++) {
+      float weight = weights[i];
+      if (weight > 0) {
+        Animation *animation = animations[i];
+        float animationTime = AnimationMixer::nowS - localStartTimeSArr[i];
+        float t2 = min(animationTime, animations[i]->duration);
+        float *vecQuat = evaluateInterpolant(animation, spec.index, t2);
         if (indexWeightBigThanZero == 0) {
           resultVecQuat = vecQuat;
 
@@ -882,7 +913,7 @@ namespace AnimationSystem {
       localWeightArr[3] = avatar->listenTransitionFactor;
 
       
-      localVecQuatPtr = doBlendList(spec, localAnimationGroups, localWeightArr, AnimationMixer::nowS);
+      localVecQuatPtr = doBlendCompanionState(spec, localAnimationGroups, localWeightArr);
       interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr, 0, avatar->idleFactorTransitionFactor, spec.isPosition);
     }
   }
