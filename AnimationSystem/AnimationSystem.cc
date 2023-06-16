@@ -399,7 +399,7 @@ namespace AnimationSystem {
     this->actionInterpolants["speakTransition"]->update(timeDiff, this->speakState);
     this->actionInterpolants["thinkTransition"]->update(timeDiff, this->thinkState);
     this->actionInterpolants["listenTransition"]->update(timeDiff, this->listenState);
-    this->actionInterpolants["idleFactorTransition"]->update(timeDiff, this->speakState || this->thinkState || this->listenState);
+    this->actionInterpolants["idleFactorTransition"]->update(timeDiff, this->randomIdleState || this->speakState || this->thinkState || this->listenState);
     this->actionInterpolants["randomSittingIdle"]->update(timeDiff, this->randomSittingIdleState);
   }
   void Avatar::update(float *scratchStack) {
