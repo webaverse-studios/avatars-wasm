@@ -618,22 +618,18 @@ namespace AnimationSystem {
     } else if (j["type"] == "randomIdle") {
       this->randomIdleState = true;
       this->randomIdleStartTimeS = j["startTimeS"];
-      localStartTimeSArr[0] = this->randomIdleStartTimeS;
       this->randomIdleAnimationIndex = animationGroupsMap["randomIdle"][this->actions["randomIdle"]["animation"]].index;
     } else if (j["type"] == "speak") {
       this->speakState = true;
       this->speakStartTimeS = j["startTimeS"];
-      localStartTimeSArr[1] = this->speakStartTimeS;
       this->speakAnimationIndex = animationGroupsMap["speak"][this->actions["speak"]["animation"]].index;
     } else if (j["type"] == "think") {
       this->thinkState = true;
       this->thinkStartTimeS = j["startTimeS"];
-      localStartTimeSArr[2] = this->thinkStartTimeS;
       this->thinkAnimationIndex = animationGroupsMap["think"][this->actions["think"]["animation"]].index;
     } else if (j["type"] == "listen") {
       this->listenState = true;
       this->listenStartTimeS = j["startTimeS"];
-      localStartTimeSArr[3] = this->listenStartTimeS;
       this->listenAnimationIndex = animationGroupsMap["listen"][this->actions["listen"]["animation"]].index;
     } else if (j["type"] == "randomSittingIdle") {
       this->randomSittingIdleState = true;
@@ -838,7 +834,7 @@ namespace AnimationSystem {
     return interpolant->resultBuffer;
   }
 
- float *doBlendList(AnimationMapping &spec, std::vector<Animation *> &animations, float *weights, float &timeS) { // note: Big performance influnce!!! Use `&` to prevent copy parameter's values!!!
+  float *doBlendList(AnimationMapping &spec, std::vector<Animation *> &animations, float *weights, float &timeS) { // note: Big performance influnce!!! Use `&` to prevent copy parameter's values!!!
     float *resultVecQuat;
     unsigned int indexWeightBigThanZero = 0;
     float currentWeight = 0;
@@ -864,7 +860,7 @@ namespace AnimationSystem {
     return resultVecQuat;
   }
 
-  float *doBlendCompanionState(AnimationMapping &spec, std::vector<Animation *> &animations, float *weights) { // note: Big performance influnce!!! Use `&` to prevent copy parameter's values!!!
+  float *doBlendList(AnimationMapping &spec, std::vector<Animation *> &animations, float *weights, float *startTimeS) { // note: Big performance influnce!!! Use `&` to prevent copy parameter's values!!!
     float *resultVecQuat;
     unsigned int indexWeightBigThanZero = 0;
     float currentWeight = 0;
@@ -872,7 +868,7 @@ namespace AnimationSystem {
       float weight = weights[i];
       if (weight > 0) {
         Animation *animation = animations[i];
-        float animationTime = AnimationMixer::nowS - localStartTimeSArr[i];
+        float animationTime = AnimationMixer::nowS - startTimeS[i];
         float t2 = min(animationTime, animations[i]->duration);
         float *vecQuat = evaluateInterpolant(animation, spec.index, t2);
         if (indexWeightBigThanZero == 0) {
@@ -905,15 +901,19 @@ namespace AnimationSystem {
       
       localAnimationGroups[0] = randomIdleAnimation;
       localWeightArr[0] = avatar->randomIdleTransitionFactor;
+      localStartTimeSArr[0] = avatar->randomIdleStartTimeS;
       localAnimationGroups[1] = speakAnimation;
       localWeightArr[1] = avatar->speakTransitionFactor;
+      localStartTimeSArr[1] = avatar->speakStartTimeS;
       localAnimationGroups[2] = thinkAnimation;
       localWeightArr[2] = avatar->thinkTransitionFactor;
+      localStartTimeSArr[2] = avatar->thinkStartTimeS;
       localAnimationGroups[3] = listenAnimation;
       localWeightArr[3] = avatar->listenTransitionFactor;
+      localStartTimeSArr[3] = avatar->listenStartTimeS;
 
       
-      localVecQuatPtr = doBlendCompanionState(spec, localAnimationGroups, localWeightArr);
+      localVecQuatPtr = doBlendList(spec, localAnimationGroups, localWeightArr, localStartTimeSArr);
       interpolateFlat(spec.dst, 0, spec.dst, 0, localVecQuatPtr, 0, avatar->idleFactorTransitionFactor, spec.isPosition);
     }
   }
