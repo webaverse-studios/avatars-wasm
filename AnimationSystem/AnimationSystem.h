@@ -142,12 +142,10 @@ namespace AnimationSystem {
     float sprintFactor;
     float movementsTransitionFactor;
     // float randomIdleTime;
-    float speakStartTimeS;
     float speakTransitionFactor;
-    float thinkStartTimeS;
     float thinkTransitionFactor;
-    float listenStartTimeS;
     float listenTransitionFactor;
+    float idleFactorTransitionFactor;
     float randomIdleDuration;
     float randomIdleSpeed;
     float randomIdleStartTimeS;
